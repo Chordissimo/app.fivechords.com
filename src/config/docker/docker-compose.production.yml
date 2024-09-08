@@ -1,0 +1,107 @@
+services:
+  aichords:
+    image: aichords
+    container_name: aichords
+    restart: always
+    build:
+      dockerfile_inline: |
+        FROM app_base:latest
+        WORKDIR /src
+        COPY ./*.py /src
+        COPY ./services /src/services
+        COPY ./helpers /src/helpers
+        EXPOSE 8000
+        CMD ["fastapi", "run", "main.py", "--port", "8000", "--workers", "2"]
+    ports:
+    - 8000:8000
+    volumes:
+    - ./.auth/:/etc/auth/:ro
+    networks:
+    - aichords
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    build:
+      args:
+      - ENV=${ENV}
+      dockerfile_inline: |
+        FROM nginx:latest
+        ARG ENV
+        RUN rm -rf /etc/nginx/inc/* && rm -rf /etc/nginx/conf.d/*
+        COPY config/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
+        COPY config/nginx/headers.conf /etc/nginx/inc/headers.conf
+        EXPOSE 443
+    volumes:
+    - ./.auth/:/etc/auth/:ro
+    - ./.certbot/www/:/var/www/certbot:ro
+    - ./.certbot/conf/:/etc/nginx/ssl/:ro
+    - ./chords/:/var/www/chords:ro
+    ports:
+    - 443:443
+    environment:
+      ENV: ${ENV}
+    networks:
+    - aichords
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_root
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_root_password
+      MONGO_INITDB_DATABASE: aichords
+    secrets:
+    - mongo_root
+    - mongo_root_password
+    ports:
+    - 27017:27017
+    networks:
+    - aichords
+    volumes:
+    - ./.mongo/data/:/data/db
+    - ./.auth/:/auth
+    - ./config/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+    - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME_FILE: /run/secrets/mongo_root
+      ME_CONFIG_MONGODB_ADMINPASSWORD_FILE: /run/secrets/mongo_root_password
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_BASICAUTH: false
+      #ME_CONFIG_BASICAUTH_USERNAME_FILE: /run/secrets/mongo_root
+      #ME_CONFIG_BASICAUTH_PASSWORD_FILE: /run/secrets/mongo_root_password
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_SITE_BASEURL: /mongo/
+    secrets:
+    - mongo_root
+    - mongo_root_password
+    networks:
+    - aichords
+
+secrets:
+  mongo_root:
+    name: mongo_root
+    file: ./.auth/mongo_root.txt
+  mongo_root_password:
+    name: mongo_root_password
+    file: ./.auth/mongo_root_password.txt
+
+networks:
+  aichords:

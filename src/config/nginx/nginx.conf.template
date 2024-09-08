@@ -1,0 +1,65 @@
+#limit_conn_zone $uri zone=$ENV:16m;
+limit_conn_zone $server_name zone=$ENV:10m;
+
+server {
+  listen 443 ssl;
+  server_name ${ENV}.aichords.pro;
+
+  log_not_found off;
+  error_log stderr info;
+
+  ssl_certificate /etc/nginx/ssl/live/${ENV}.aichords.pro/fullchain.pem;
+  ssl_certificate_key /etc/nginx/ssl/live/${ENV}.aichords.pro/privkey.pem;
+
+  client_max_body_size 30m;
+  client_body_buffer_size 30m;
+
+  proxy_connect_timeout 300;
+  proxy_read_timeout 300;
+  proxy_send_timeout 300;
+  proxy_buffering off;
+  proxy_cache off;
+  
+  location /.well-known/acme-challenge/ {
+    allow all; 
+    root /var/www/certbot; 
+  }
+
+  location ~* .(chords/GuitarChords.json|chords/UkuleleChords.json)$ {
+    allow all;
+    root /var/www;
+    include /etc/nginx/inc/headers.conf;
+  }
+
+  location ~* .(docs|openapi.json)$  {
+    auth_basic "/docs/";
+    auth_basic_user_file /etc/auth/auth.conf;
+    include /etc/nginx/inc/headers.conf;
+    proxy_pass http://aichords:8000;
+  }
+
+  location ~* .(mongo) {
+    auth_basic "/mongo/";
+    auth_basic_user_file /etc/auth/auth.conf;
+    include /etc/nginx/inc/headers.conf;
+    proxy_pass http://mongo-express:8081;
+  }
+
+  location = /logs {
+    return 301 https://${ENV}.aichords.pro:9443;
+  }
+
+  location ~* .(monitorix) {
+    auth_basic "/monitorix/";
+    auth_basic_user_file /etc/auth/auth.conf;
+    include /etc/nginx/inc/headers.conf;
+    proxy_pass http://host.docker.internal:8082;
+  }
+
+  location ~* .(upload|youtube|status) {
+    limit_conn ${ENV} 3;
+    include /etc/nginx/inc/headers.conf;
+    proxy_pass http://aichords:8000;
+  }
+
+}
