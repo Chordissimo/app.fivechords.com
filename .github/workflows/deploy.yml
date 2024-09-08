@@ -34,9 +34,9 @@ jobs:
         run: |-
           echo "$SSH_KEY" | tr -d '\r' > ssh_key
           chmod 0600 ssh_key
-          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "mkdir -p /home/$USER/app"
-          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./ $USER@$SERVER:app
-          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/app; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
+          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "mkdir -p /home/$USER/src"
+          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./ $USER@$SERVER:src
+          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/src; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
           
   DeployChords:
     name: "Updating chords JSON"
@@ -55,4 +55,4 @@ jobs:
         run: |-
           echo "$SSH_KEY" | tr -d '\r' > ssh_key
           chmod 0600 ssh_key
-          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./config/chords $USER@$SERVER:app/config
+          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./config/chords $USER@$SERVER:src/config
