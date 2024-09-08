@@ -5,15 +5,9 @@ from pymongo.database import Database
 from .db import DATABASE_COLLECTIONS
 
 
-#with open("tokens.txt", "r") as f:
-#    pass_token = f.read().strip()
-
-
 def get_user_by_token(
         database: Database, token: str
 ) -> Optional[Dict[str, Any]]:
-#    if token == pass_token:
-#        return {}
 
     result = database[DATABASE_COLLECTIONS.USERS.name].find_one({
         "token": token

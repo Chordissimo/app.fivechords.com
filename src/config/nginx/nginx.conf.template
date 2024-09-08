@@ -25,41 +25,58 @@ server {
     root /var/www/certbot; 
   }
 
-  location ~* .(chords/GuitarChords.json|chords/UkuleleChords.json)$ {
-    allow all;
-    root /var/www;
-    include /etc/nginx/inc/headers.conf;
-  }
-
-  location ~* .(docs|openapi.json)$  {
+  location /docs  {
     auth_basic "/docs/";
     auth_basic_user_file /etc/auth/auth.conf;
     include /etc/nginx/inc/headers.conf;
     proxy_pass http://aichords:8000;
   }
 
-  location ~* .(mongo) {
+  location / {
+    limit_conn ${ENV} 2;
+    include /etc/nginx/inc/headers.conf;
+
+    location /upload { proxy_pass http://aichords:8000; }
+    location /youtube { proxy_pass http://aichords:8000; }
+  }
+
+  location /api/docs {
+    auth_basic "/api/docs/";
+    auth_basic_user_file /etc/auth/auth.conf;
+    proxy_pass http://api:8002;
+  }
+
+  location /api {
+    limit_conn ${ENV} 8;
+    include /etc/nginx/inc/headers.conf;
+
+    location /api/upload { proxy_pass http://api:8002; }
+    location /api/youtube { proxy_pass http://api:8002; }
+    location /api/status { proxy_pass http://api:8002; }
+   }
+
+  location /chords {
+    allow all;
+    root /var/www;
+    include /etc/nginx/inc/headers.conf;
+  }
+
+  location /mongo {
     auth_basic "/mongo/";
     auth_basic_user_file /etc/auth/auth.conf;
     include /etc/nginx/inc/headers.conf;
     proxy_pass http://mongo-express:8081;
   }
 
-  location = /logs {
+  location /logs {
     return 301 https://${ENV}.aichords.pro:9443;
   }
 
-  location ~* .(monitorix) {
+  location /monitorix {
     auth_basic "/monitorix/";
     auth_basic_user_file /etc/auth/auth.conf;
     include /etc/nginx/inc/headers.conf;
     proxy_pass http://host.docker.internal:8082;
-  }
-
-  location ~* .(upload|youtube|status) {
-    limit_conn ${ENV} 3;
-    include /etc/nginx/inc/headers.conf;
-    proxy_pass http://aichords:8000;
   }
 
 }

@@ -13,8 +13,8 @@ if [[ ${SRV} == *"nginx"* ]]; then
 fi
 
 if [[ ${SRV} == *"aichords"* ]]; then
-  sudo ENV=${ENV} docker compose build aichords --no-cache
-  sudo ENV=${ENV} docker compose up -d aichords
+  sudo ENV=${ENV} docker compose build aichords api --no-cache
+  sudo ENV=${ENV} docker compose up -d aichords api
 fi
 
 if [[ ${SRV} == *"mongo"* ]]; then

@@ -18,6 +18,8 @@ services:
     - ./.auth/:/etc/auth/:ro
     networks:
     - aichords
+    environment:
+    - LD_LIBRARY_PATH=/usr/local/lib/python3.9/site-packages/nvidia/cudnn/lib/
     deploy:
       resources:
         reservations:
@@ -25,6 +27,28 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+
+  api:
+    image: api
+    container_name: api
+    restart: always
+    build:
+      dockerfile_inline: |
+        FROM app_base:latest
+        WORKDIR /src
+        COPY ./*.py /src
+        COPY ./services /src/services
+        COPY ./helpers /src/helpers
+        EXPOSE 8002
+        CMD ["fastapi", "run", "api.py", "--port", "8002", "--workers", "8"]
+    environment:
+    - LD_LIBRARY_PATH=/usr/local/lib/python3.9/site-packages/nvidia/cudnn/lib/
+    ports:
+    - 8002:8002
+    volumes:
+    - ./.auth/:/etc/auth/:ro
+    networks:
+    - aichords
 
   nginx:
     image: nginx:latest
@@ -85,6 +109,8 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD_FILE: /run/secrets/mongo_root_password
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_BASICAUTH: false
+      #ME_CONFIG_BASICAUTH_USERNAME_FILE: /run/secrets/mongo_root
+      #ME_CONFIG_BASICAUTH_PASSWORD_FILE: /run/secrets/mongo_root_password
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_SITE_BASEURL: /mongo/
     secrets:
