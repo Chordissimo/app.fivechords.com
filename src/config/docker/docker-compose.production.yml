@@ -85,8 +85,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD_FILE: /run/secrets/mongo_root_password
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_BASICAUTH: false
-      #ME_CONFIG_BASICAUTH_USERNAME_FILE: /run/secrets/mongo_root
-      #ME_CONFIG_BASICAUTH_PASSWORD_FILE: /run/secrets/mongo_root_password
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_SITE_BASEURL: /mongo/
     secrets:
