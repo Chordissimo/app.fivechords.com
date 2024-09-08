@@ -26,7 +26,8 @@ jobs:
       NAMESPACE: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'production' }}
       USER: "ci_user" 
       SSH_KEY: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_USER_KEY || secrets.PRODUCTION_USER_KEY }}
-      SERVER: ${{ github.ref == 'refs/heads/staging' && '35.159.4.155' || '74.82.29.215' }}
+      SERVER: ${{ github.ref == 'refs/heads/staging' && '74.82.29.215' || '74.82.29.215' }}
+      DIR: ${{ github.ref == 'refs/heads/staging' && 'src_stage' || 'src' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,9 +35,9 @@ jobs:
         run: |-
           echo "$SSH_KEY" | tr -d '\r' > ssh_key
           chmod 0600 ssh_key
-          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "mkdir -p /home/$USER/src"
-          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./ $USER@$SERVER:src
-          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/src; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
+          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "mkdir -p /home/$USER/$DIR"
+          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./ $USER@$SERVER:$DIR
+          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/$DIR; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
           
   DeployChords:
     name: "Updating chords JSON"
@@ -45,9 +46,10 @@ jobs:
     timeout-minutes: 60
     env:
       NAMESPACE: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'production' }}
-      SERVER: ${{ github.ref == 'refs/heads/staging' && '35.159.4.155' || '74.82.29.215' }}
+      SERVER: ${{ github.ref == 'refs/heads/staging' && '74.82.29.215' || '74.82.29.215' }}
       USER: "ci_user" 
       SSH_KEY: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_USER_KEY || secrets.PRODUCTION_USER_KEY }}
+      DIR: ${{ github.ref == 'refs/heads/staging' && 'src_stage' || 'src' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,4 +57,4 @@ jobs:
         run: |-
           echo "$SSH_KEY" | tr -d '\r' > ssh_key
           chmod 0600 ssh_key
-          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./config/chords $USER@$SERVER:src/config
+          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./config/chords $USER@$SERVER:$DIR/config
