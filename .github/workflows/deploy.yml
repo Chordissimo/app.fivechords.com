@@ -21,12 +21,12 @@ jobs:
     timeout-minutes: 60
     env:
       NGINX: ${{ contains(github.event.pull_request.title, '[nginx]') &&  'nginx' || '' }}
-      AICHORDS: ${{ contains(github.event.pull_request.title, '[aichords]') &&  'aichords' || '' }}
+      AICHORDS: ${{ contains(github.event.pull_request.title, '[airchords]') &&  'airchords' || '' }}
       MONGO: ${{ contains(github.event.pull_request.title, '[mongo]') &&  'mongo' || '' }}
-      NAMESPACE: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'production' }}
+      NAMESPACE: ${{ github.ref == 'refs/heads/staging' && 'get_st' || 'get' }}
       USER: "ci_user" 
       SSH_KEY: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_USER_KEY || secrets.PRODUCTION_USER_KEY }}
-      SERVER: ${{ github.ref == 'refs/heads/staging' && '74.82.29.215' || '74.82.29.215' }}
+      SERVER: ${{ github.ref == 'refs/heads/staging' && '184.105.181.159' || '184.105.181.159' }}
       DIR: ${{ github.ref == 'refs/heads/staging' && 'src_stage' || 'src' }}
     steps:
       - name: Checkout
@@ -45,8 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      NAMESPACE: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'production' }}
-      SERVER: ${{ github.ref == 'refs/heads/staging' && '74.82.29.215' || '74.82.29.215' }}
+      NAMESPACE: ${{ github.ref == 'refs/heads/staging' && 'get_st' || 'get' }}
+      SERVER: ${{ github.ref == 'refs/heads/staging' && '184.105.181.159' || '184.105.181.159' }}
       USER: "ci_user" 
       SSH_KEY: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_USER_KEY || secrets.PRODUCTION_USER_KEY }}
       DIR: ${{ github.ref == 'refs/heads/staging' && 'src_stage' || 'src' }}
