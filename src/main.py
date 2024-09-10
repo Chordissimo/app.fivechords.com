@@ -18,7 +18,7 @@ from urllib.parse import parse_qs
 
 DB_NAME = "aichords"
 
-app = FastAPI(title="AirChords",
+app = FastAPI(title="AirChords - recognizer",
               docs_url='/adm/recognize',
               openapi_url='/adm/recognize/openapi.json')
 
