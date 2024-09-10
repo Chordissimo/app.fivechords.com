@@ -65,6 +65,7 @@ services:
         RUN rm -rf /etc/nginx/inc/* && rm -rf /etc/nginx/conf.d/*
         COPY config/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
         COPY config/nginx/headers.conf /etc/nginx/inc/headers.conf
+        RUN mkdir -p /var/www/resources
         COPY config/chords/* /var/www/resources
         EXPOSE 443
     volumes:
