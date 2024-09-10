@@ -2,15 +2,14 @@ limit_conn_zone $binary_remote_addr zone=perip:10m;
 limit_conn_zone $server_name zone=perserver:10m;
 
 server {
-  #listen 443 ssl;
-  listen 80;
-  #server_name ${ENV}.airchords.app;
+  listen 443 ssl;
+  server_name ${ENV}.airchords.app;
 
   log_not_found off;
   error_log stderr info;
 
-  #ssl_certificate /etc/nginx/ssl/live/${ENV}.airchords.app/fullchain.pem;
-  #ssl_certificate_key /etc/nginx/ssl/live/${ENV}.airchords.app/privkey.pem;
+  ssl_certificate /etc/nginx/ssl/live/${ENV}.airchords.app/fullchain.pem;
+  ssl_certificate_key /etc/nginx/ssl/live/${ENV}.airchords.app/privkey.pem;
 
   client_max_body_size 30m;
   client_body_buffer_size 30m;
@@ -22,10 +21,10 @@ server {
   proxy_cache off;
 
   location / {
-    location /.well-known/acme-challenge/ { 
-      allow all;
-      root /var/www/certbot; 
-    }
+#    location /.well-known/acme-challenge/ { 
+#      allow all;
+#      root /var/www/certbot; 
+#    }
 
     location /resources { 
       allow all;
@@ -63,7 +62,7 @@ server {
       auth_basic_user_file /etc/auth/auth.conf;
       include /etc/nginx/inc/headers.conf;
 
-      location /adm/retrieve { proxy_pass http://retrieve:8002; }
+      location /adm/retrieve { proxy_pass http://retriever:8002; }
       location /adm/recognize { proxy_pass http://recognizer:8000; }
       location /adm/mongo { proxy_pass http://mongo-express:8081; }
       location /adm/hardware { proxy_pass http://host.docker.internal:8082; }
