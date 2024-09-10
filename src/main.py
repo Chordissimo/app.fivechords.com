@@ -18,9 +18,9 @@ from urllib.parse import parse_qs
 
 DB_NAME = "aichords"
 
-app = FastAPI(title="ProChords",
-              docs_url='/docs',
-              openapi_url='/docs/openapi.json')
+app = FastAPI(title="AirChords",
+              docs_url='/adm/retrieve',
+              openapi_url='/adm/retrieve/openapi.json')
 
 origins = ['*']
 
@@ -52,17 +52,17 @@ if not os.path.exists(DATA_PATH):
     os.makedirs(DATA_PATH)
 
 
-@app.get("/health_check", response_model=Response)
-async def health_check() -> Response:
-    return Response(
-        chords=[],
-        text=[],
-        tempo=0.0,
-        duration=0.0
-    )
+# @app.get("/health_check", response_model=Response)
+# async def health_check() -> Response:
+#     return Response(
+#         chords=[],
+#         text=[],
+#         tempo=0.0,
+#         duration=0.0
+#     )
 
 
-@app.post("/upload/{task_id}", response_model=Response)
+@app.post("/api/retrieve/{task_id}", response_model=Response)
 async def recognize(
     request: Request,
     task_id: str,
@@ -149,7 +149,7 @@ async def recognize(
             shutil.rmtree(work_dir)
 
 
-@app.post("/youtube/{task_id}", response_model=Response)
+@app.post("/api/retrieve/youtube/{task_id}", response_model=Response)
 async def recognize_youtube(
     request: Request,
     task_id: str,
