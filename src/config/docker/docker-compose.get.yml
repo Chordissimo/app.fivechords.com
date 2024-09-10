@@ -65,7 +65,7 @@ services:
         RUN rm -rf /etc/nginx/inc/* && rm -rf /etc/nginx/conf.d/*
         COPY config/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
         COPY config/nginx/headers.conf /etc/nginx/inc/headers.conf
-        COPY config/chords/* /var/www/chords
+        #COPY config/chords/* /var/www/chords
         EXPOSE 443
     volumes:
     - ./.auth/:/etc/auth/:ro
