@@ -29,9 +29,9 @@ services:
               count: 1
               capabilities: [gpu]
 
-  retriver:
-    image: retriver
-    container_name: retriver
+  retriever:
+    image: retriever
+    container_name: retriever
     restart: always
     build:
       dockerfile_inline: |
