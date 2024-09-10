@@ -1,7 +1,7 @@
 services:
-  recongnizer:
-    image: recongnizer
-    container_name: recongnizer
+  recognizer:
+    image: recognizer
+    container_name: recognizer
     restart: always
     build:
       dockerfile_inline: |
