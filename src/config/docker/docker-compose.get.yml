@@ -73,7 +73,6 @@ services:
     - ./chords/:/var/www/chords:ro
     ports:
     - 443:443
-    - 80:80
     environment:
       ENV: ${ENV}
     networks:
