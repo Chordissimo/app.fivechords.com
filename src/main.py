@@ -19,8 +19,8 @@ from urllib.parse import parse_qs
 DB_NAME = "aichords"
 
 app = FastAPI(title="AirChords",
-              docs_url='/adm/retrieve',
-              openapi_url='/adm/retrieve/openapi.json')
+              docs_url='/adm/recognize',
+              openapi_url='/adm/recognize/openapi.json')
 
 origins = ['*']
 
@@ -62,7 +62,7 @@ if not os.path.exists(DATA_PATH):
 #     )
 
 
-@app.post("/api/retrieve/{task_id}", response_model=Response)
+@app.post("/api/recognize/{task_id}", response_model=Response)
 async def recognize(
     request: Request,
     task_id: str,
@@ -149,7 +149,7 @@ async def recognize(
             shutil.rmtree(work_dir)
 
 
-@app.post("/api/retrieve/youtube/{task_id}", response_model=Response)
+@app.post("/api/recognize/youtube/{task_id}", response_model=Response)
 async def recognize_youtube(
     request: Request,
     task_id: str,
