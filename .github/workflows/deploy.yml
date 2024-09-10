@@ -1,4 +1,4 @@
-name: aichords
+name: aichords 
 
 on:
   workflow_dispatch:
