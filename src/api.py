@@ -13,8 +13,8 @@ from urllib.parse import parse_qs
 DB_NAME = "aichords"
 
 app = FastAPI(title='AirChords - retriver',
-              docs_url='/adm/retrive',
-              openapi_url='/adm/retrive/openapi.json')
+              docs_url='/adm/retrieve',
+              openapi_url='/adm/retrieve/openapi.json')
 
 origins = ['*']
 
@@ -51,7 +51,7 @@ app.add_middleware(
 #     )
 
 
-@app.get("/api/retrive/{task_id}", response_model=StatusResponse)
+@app.get("/api/retrieve/{task_id}", response_model=StatusResponse)
 async def get_status(request: Request, task_id: str) -> StatusResponse:
     try:
         user_id = request.state.user_id
@@ -87,7 +87,7 @@ async def get_status(request: Request, task_id: str) -> StatusResponse:
         raise HTTPException(status_code=500, detail=e.__str__())
 
 
-@app.post("/api/retrive/youtube/{task_id}", response_model=Response)
+@app.post("/api/retrieve/youtube/{task_id}", response_model=Response)
 async def recognize_youtube(
     request: Request,
     task_id: str,
