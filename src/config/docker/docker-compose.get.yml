@@ -1,7 +1,7 @@
 services:
-  aichords:
-    image: aichords
-    container_name: aichords
+  recongnizer:
+    image: recongnizer
+    container_name: recongnizer
     restart: always
     build:
       dockerfile_inline: |
@@ -17,7 +17,7 @@ services:
     volumes:
     - ./.auth/:/etc/auth/:ro
     networks:
-    - aichords
+    - airchords
     environment:
     - LD_LIBRARY_PATH=/usr/local/lib/python3.9/site-packages/nvidia/cudnn/lib/
     deploy:
@@ -28,9 +28,9 @@ services:
               count: 1
               capabilities: [gpu]
 
-  api:
-    image: api
-    container_name: api
+  retriver:
+    image: retriver
+    container_name: retriver
     restart: always
     build:
       dockerfile_inline: |
@@ -48,7 +48,7 @@ services:
     volumes:
     - ./.auth/:/etc/auth/:ro
     networks:
-    - aichords
+    - airchords
 
   nginx:
     image: nginx:latest
@@ -63,7 +63,7 @@ services:
         RUN rm -rf /etc/nginx/inc/* && rm -rf /etc/nginx/conf.d/*
         COPY config/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
         COPY config/nginx/headers.conf /etc/nginx/inc/headers.conf
-        EXPOSE 443
+        EXPOSE 443 80
     volumes:
     - ./.auth/:/etc/auth/:ro
     - ./.certbot/www/:/var/www/certbot:ro
@@ -71,10 +71,11 @@ services:
     - ./chords/:/var/www/chords:ro
     ports:
     - 443:443
+    - 80:80
     environment:
       ENV: ${ENV}
     networks:
-    - aichords
+    - airchords
     extra_hosts:
     - "host.docker.internal:host-gateway"
 
@@ -92,7 +93,7 @@ services:
     ports:
     - 27017:27017
     networks:
-    - aichords
+    - airchords
     volumes:
     - ./.mongo/data/:/data/db
     - ./.auth/:/auth
@@ -117,7 +118,7 @@ services:
     - mongo_root
     - mongo_root_password
     networks:
-    - aichords
+    - airchords
 
 secrets:
   mongo_root:
@@ -128,4 +129,4 @@ secrets:
     file: ./.auth/mongo_root_password.txt
 
 networks:
-  aichords:
+  airchords:
