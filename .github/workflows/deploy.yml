@@ -37,7 +37,7 @@ jobs:
           chmod 0600 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "mkdir -p /home/$USER/$DIR"
           rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./ $USER@$SERVER:$DIR
-          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/$DIR; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
+          #ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/$DIR; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
           
   DeployChords:
     name: "Updating chords JSON"
