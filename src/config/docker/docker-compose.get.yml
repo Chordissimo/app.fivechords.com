@@ -71,7 +71,7 @@ services:
     - ./.auth/:/etc/auth/:ro
     - ./.certbot/www/:/var/www/certbot:ro
     - ./.certbot/conf/:/etc/nginx/ssl/:ro
-    - ./resources/:/var/www/resources:ro
+    - ./config/chords/:/var/www/resources:ro
     ports:
     - 443:443
     environment:
