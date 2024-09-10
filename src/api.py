@@ -12,9 +12,9 @@ from urllib.parse import parse_qs
 
 DB_NAME = "aichords"
 
-app = FastAPI(title='ProChords',
-              docs_url='/api/docs',
-              openapi_url='/api/docs/openapi.json')
+app = FastAPI(title='AirChords - retriver',
+              docs_url='/adm/retrive',
+              openapi_url='/adm/retrive/openapi.json')
 
 origins = ['*']
 
@@ -41,17 +41,17 @@ app.add_middleware(
 )
 
 
-@app.get("/api/health_check", response_model=Response)
-async def health_check() -> Response:
-    return Response(
-        chords=[],
-        text=[],
-        tempo=0.0,
-        duration=0.0
-    )
+# @app.get("/api/health_check", response_model=Response)
+# async def health_check() -> Response:
+#     return Response(
+#         chords=[],
+#         text=[],
+#         tempo=0.0,
+#         duration=0.0
+#     )
 
 
-@app.get("/api/status/{task_id}", response_model=StatusResponse)
+@app.get("/api/retrive/{task_id}", response_model=StatusResponse)
 async def get_status(request: Request, task_id: str) -> StatusResponse:
     try:
         user_id = request.state.user_id
@@ -87,7 +87,7 @@ async def get_status(request: Request, task_id: str) -> StatusResponse:
         raise HTTPException(status_code=500, detail=e.__str__())
 
 
-@app.post("/api/youtube/{task_id}", response_model=Response)
+@app.post("/api/retrive/youtube/{task_id}", response_model=Response)
 async def recognize_youtube(
     request: Request,
     task_id: str,
@@ -109,7 +109,7 @@ async def recognize_youtube(
                 duration=result["duration"]
             )
         response = RedirectResponse(
-            url=f"https://production.aichords.pro/youtube/{task_id}",
+            url=f"https://get.aichords.app/api/recognize/youtube/{task_id}",
             status_code=307
         )
 #        headers = dict(request.headers)
