@@ -24,7 +24,7 @@ async def validate_user_middleware(
     database: Database,
     call_next: Any
 ):
-    if "/docs" in str(request.url) or "/docs/api" in str(request.url) or "openapi.json" in str(request.url):
+    if "/adm" in str(request.url) or "openapi.json" in str(request.url):
         return await call_next(request)
     token = request.headers.get("Authorization", None)
     user_id = None
