@@ -1,4 +1,4 @@
-services:
+services: 
   recognizer:
     image: recognizer
     container_name: recognizer
