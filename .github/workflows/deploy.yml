@@ -27,7 +27,7 @@ jobs:
       USER: "ci_user" 
       SSH_KEY: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_USER_KEY || secrets.PRODUCTION_USER_KEY }}
       SERVER: ${{ github.ref == 'refs/heads/staging' && '184.105.181.159' || '184.105.181.159' }}
-      DIR: ${{ github.ref == 'refs/heads/staging' && 'src_stage' || 'src' }}
+      TAGERT_DIR: ${{ github.ref == 'refs/heads/staging' && 'src_stage' || 'src' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,8 +36,8 @@ jobs:
           echo "$SSH_KEY" | tr -d '\r' > ssh_key
           chmod 0600 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "mkdir -p /home/$USER/$DIR"
-          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./ $USER@$SERVER:$DIR
-          #ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/$DIR; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
+          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./src $USER@$SERVER:$TAGERT_DIR
+          #ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/$TAGERT_DIR; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
           
   DeployChords:
     name: "Updating chords JSON"
