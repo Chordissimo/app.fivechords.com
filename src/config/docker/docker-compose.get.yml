@@ -65,14 +65,13 @@ services:
         RUN rm -rf /etc/nginx/inc/* && rm -rf /etc/nginx/conf.d/*
         COPY config/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
         COPY config/nginx/headers.conf /etc/nginx/inc/headers.conf
-        RUN mkdir -p /var/www/resources
-        COPY config/chords/* /var/www/resources
+        COPY config/chords/* /var/www/chords
         EXPOSE 443
     volumes:
     - ./.auth/:/etc/auth/:ro
-    - ./.certbot/www/:/var/www/certbot/:ro
-    - ./.certbot/conf/:/etc/nginx/ssl/:ro
-    - ./config/chords/:/var/www/resources/:ro
+    - ./.certbot/www:/var/www/certbot:ro
+    - ./.certbot/conf:/etc/nginx/ssl:ro
+    - ./config/chords:/var/www/chords:ro
     ports:
     - 443:443
     environment:
