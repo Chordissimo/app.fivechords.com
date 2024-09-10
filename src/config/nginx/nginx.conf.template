@@ -2,14 +2,15 @@ limit_conn_zone $binary_remote_addr zone=perip:10m;
 limit_conn_zone $server_name zone=perserver:10m;
 
 server {
-  listen 443 ssl;
-  server_name ${ENV}.airchords.app;
+  #listen 443 ssl;
+  listen 80;
+  #server_name ${ENV}.airchords.app;
 
   log_not_found off;
   error_log stderr info;
 
-  ssl_certificate /etc/nginx/ssl/live/${ENV}.airchords.app/fullchain.pem;
-  ssl_certificate_key /etc/nginx/ssl/live/${ENV}.airchords.app/privkey.pem;
+  #ssl_certificate /etc/nginx/ssl/live/${ENV}.airchords.app/fullchain.pem;
+  #ssl_certificate_key /etc/nginx/ssl/live/${ENV}.airchords.app/privkey.pem;
 
   client_max_body_size 30m;
   client_body_buffer_size 30m;
@@ -38,8 +39,8 @@ server {
       location /api/recognize {
         limit_conn perserver 2;
 
-        location /api/recognize/upload;
-        location /api/recognize/youtube;
+        location /api/recognize/upload {}
+        location /api/recognize/youtube {}
     
         proxy_pass http://recognizer:8000;
       }
@@ -47,8 +48,8 @@ server {
       location /api/retrieve {
         limit_conn perserver 8;
 
-        location /api/retrieve/youtube;
-        location /api/retrieve/status;
+        location /api/retrieve/youtube {}
+        location /api/retrieve/status {}
 
         proxy_pass http://retriever:8002; 
       }
