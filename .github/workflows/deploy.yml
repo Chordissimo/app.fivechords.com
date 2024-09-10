@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 60
     env:
       NGINX: ${{ contains(github.event.pull_request.title, '[nginx]') &&  'nginx' || '' }}
-      AICHORDS: ${{ contains(github.event.pull_request.title, '[airchords]') &&  'airchords' || '' }}
+      APP: ${{ contains(github.event.pull_request.title, '[app]') &&  'app' || '' }}
       MONGO: ${{ contains(github.event.pull_request.title, '[mongo]') &&  'mongo' || '' }}
       NAMESPACE: ${{ github.ref == 'refs/heads/staging' && 'get_st' || 'get' }}
       USER: "ci_user" 
@@ -35,9 +35,8 @@ jobs:
         run: |-
           echo "$SSH_KEY" | tr -d '\r' > ssh_key
           chmod 0600 ssh_key
-          #ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "mkdir -p /home/$USER/$TAGERT_DIR"
           rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./src $USER@$SERVER:/home/$USER
-          #ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/$TAGERT_DIR; sudo ENV=$NAMESPACE SRV="$NGINX,$AICHORDS,$MONGO" bash scripts/build_docker.sh"
+          ssh -o StrictHostKeyChecking=no -i ssh_key $USER@$SERVER "cd /home/$USER/$TAGERT_DIR; sudo ENV=$NAMESPACE SRV="$NGINX,$APP,$MONGO" bash scripts/build_docker.sh"
           
   DeployChords:
     name: "Updating chords JSON"
