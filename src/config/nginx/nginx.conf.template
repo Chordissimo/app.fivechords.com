@@ -26,7 +26,7 @@ server {
 #      root /var/www/certbot; 
 #    }
 
-    location /resources { 
+    location /chords { 
       allow all;
       root /var/www; 
     }
@@ -65,7 +65,7 @@ server {
       location /adm/retrieve { proxy_pass http://retriever:8002; }
       location /adm/recognize { proxy_pass http://recognizer:8000; }
       location /adm/mongo { proxy_pass http://mongo-express:8081; }
-      location /adm/hardware { proxy_pass http://host.docker.internal:8082; }
+      location /adm/monitorix { proxy_pass http://host.docker.internal:8082; }
     }
 
     location /portainer {
