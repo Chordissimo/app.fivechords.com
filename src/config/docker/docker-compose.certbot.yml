@@ -1,8 +1,0 @@
-services:
-  certbot:
-    image: certbot/certbot:latest
-    container_name: certbot
-    volumes:
-     - ./app_data/certbot/www/:/var/www/certbot:rw
-     - ./app_data/certbot/conf/:/etc/letsencrypt/:rw
-    command: certonly --webroot --webroot-path /var/www/certbot/ -d production.aichords.pro --dry-run
