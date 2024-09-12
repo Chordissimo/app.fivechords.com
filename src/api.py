@@ -109,7 +109,7 @@ async def recognize_youtube(
                 duration=result["duration"]
             )
         response = RedirectResponse(
-            url=f"https://get.aichords.app/api/recognize/youtube/{task_id}",
+            url=f"https://app.fivechords.com/api/recognize/youtube/{task_id}",
             status_code=307
         )
 #        headers = dict(request.headers)
