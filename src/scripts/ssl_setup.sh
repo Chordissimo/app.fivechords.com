@@ -17,4 +17,4 @@ if [[ $2 == "" ]]; then
 fi
 
 sudo DOMAIN=$1 docker compose -f $2 run --rm certbot certonly $3 --webroot --webroot-path /var/www/certbot/ -d $1
-(sudo crontab -l ; echo "@monthly sh /home/ci_user/app/scripts/ssl_setup.sh ${1} ${2}") | sort - | uniq - | sudo crontab -
+(sudo crontab -l ; echo "@monthly bash /home/ci_user/app/scripts/ssl_setup.sh ${1} ${2}") | sort - | uniq - | sudo crontab -
