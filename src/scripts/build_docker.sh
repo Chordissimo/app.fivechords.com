@@ -2,7 +2,7 @@
 set -e
 
 cd /home/ci_user/src
-sudo docker builder prune -f &&
+sudo docker builder prune -f && \
 sudo cp config/docker/${DOMAIN}.yml ./docker-compose.yml
 sudo ln -sf /home/ci_user/.auth ./.auth
 sudo ln -sf /home/ci_user/.certbot ./.certbot
