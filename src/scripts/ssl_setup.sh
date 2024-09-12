@@ -4,6 +4,7 @@ if [[ $1 == "" ]]; then
   echo "<domain_name> - e.g. get.airchords.app"
   echo "<path_to_yaml> - config/certbot/docker-compose.certbot.yaml"
   echo
+  exit 1
 fi
 
 if [[ $2 == "" ]]; then
@@ -12,6 +13,7 @@ if [[ $2 == "" ]]; then
   echo "<domain_name> - e.g. get.airchords.app"
   echo "<path_to_yaml> - config/certbot/docker-compose.certbot.yaml"
   echo
+  exit 1
 fi
 
 sudo DOMAIN=$1 docker compose -f $2 run --rm certbot certonly --dry-run --webroot --webroot-path /var/www/certbot/ -d $1
