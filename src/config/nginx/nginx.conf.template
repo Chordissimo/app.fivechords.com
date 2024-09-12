@@ -3,7 +3,7 @@ limit_conn_zone $server_name zone=perserver:10m;
 
 server {
   listen 443 ssl;
-  server_name ${ENV}.airchords.app;
+  server_name ${ENV};
 
   log_not_found off;
   error_log stderr info;
