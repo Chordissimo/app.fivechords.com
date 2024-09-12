@@ -14,5 +14,5 @@ if [[ $2 == "" ]]; then
   echo
 fi
 
-sudo ENV=$1 docker compose -f $2 run --rm certbot certonly --dry-run --webroot --webroot-path /var/www/certbot/ -d $1
+sudo DOMAIN=$1 docker compose -f $2 run --rm certbot certonly --dry-run --webroot --webroot-path /var/www/certbot/ -d $1
 #(sudo crontab -l ; echo "@monthly sh /home/ci_user/app/scripts/ssl_renew.sh ${1}") | sort - | uniq - | sudo crontab -
