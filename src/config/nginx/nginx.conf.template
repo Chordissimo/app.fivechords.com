@@ -8,8 +8,8 @@ server {
   log_not_found off;
   error_log stderr info;
 
-  ssl_certificate /etc/nginx/ssl/live/${ENV}.airchords.app/fullchain.pem;
-  ssl_certificate_key /etc/nginx/ssl/live/${ENV}.airchords.app/privkey.pem;
+  ssl_certificate /etc/nginx/ssl/live/${DOMAIN}/fullchain.pem;
+  ssl_certificate_key /etc/nginx/ssl/live/${DOMAIN}/privkey.pem;
 
   client_max_body_size 30m;
   client_body_buffer_size 30m;
@@ -69,7 +69,7 @@ server {
     }
 
     location /portainer {
-      return 301 https://${ENV}.airchords.app:9443;
+      return 301 https://${DOMAIN}:9443;
     }
   }
 }
