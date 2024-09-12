@@ -5,4 +5,4 @@ services:
     volumes:
      - /home/ci_user/.certbot/www/:/var/www/certbot:rw
      - /home/ci_user/.certbot/conf/:/etc/letsencrypt/:rw
-    command: certonly --webroot --webroot-path /var/www/certbot/ -d ${ENV}.airchords.app
+    command: certonly --webroot --webroot-path /var/www/certbot/ -d ${DOMAIN}
