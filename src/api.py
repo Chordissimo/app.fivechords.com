@@ -51,7 +51,7 @@ app.add_middleware(
 #     )
 
 
-@app.get("/api/retrieve/{task_id}", response_model=StatusResponse)
+@app.get("/api/retrieve/status/{task_id}", response_model=StatusResponse)
 async def get_status(request: Request, task_id: str) -> StatusResponse:
     try:
         user_id = request.state.user_id
