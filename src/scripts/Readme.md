@@ -144,14 +144,13 @@ COMMIT
 * add the following rules to UFW:
 ```
 sudo ufw allow proto tcp from any to any port 22
-sudo ufw allow proto tcp from any to any port 80
 sudo ufw allow proto tcp from any to any port 443
 sudo ufw allow proto tcp from 172.0.0.0/8 to any port 8082
 sudo ufw route allow proto tcp from any to any port 22
-sudo ufw route allow proto tcp from any to any port 80
 sudo ufw route allow proto tcp from any to any port 443
 sudo ufw route allow proto tcp from 172.0.0.0/8 to any port 8082
 sudo ufw default deny incoming
+sudo ufw allow 80 out 
 ```
 
 * if ufw is enabled
