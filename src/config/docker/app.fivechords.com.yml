@@ -57,8 +57,8 @@ services:
     container_name: nginx
     restart: always
     build:
-      args:
-      - DOMAIN=${DOMAIN}
+      #args:
+      #- DOMAIN=${DOMAIN}
       dockerfile_inline: |
         FROM nginx:latest
         ARG ENV
@@ -74,7 +74,7 @@ services:
     ports:
     - 443:443
     environment:
-      ENV: ${DOMAIN}
+      DOMAIN: ${DOMAIN}
     networks:
     - airchords
     extra_hosts:
