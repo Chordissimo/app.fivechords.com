@@ -12,7 +12,7 @@ from urllib.parse import parse_qs
 
 DB_NAME = "aichords"
 
-app = FastAPI(title='AirChords - retriver',
+app = FastAPI(title='FiveChords - retriver',
               docs_url='/adm/retrieve',
               openapi_url='/adm/retrieve/openapi.json')
 
