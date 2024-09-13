@@ -1,4 +1,4 @@
-## CI Workflow
+## CI Workflow 
 Normal merge order: Development branch -> Staging -> Master
 * To trigger deploy, create and merge a PR with the title starting with `[Release]` where the base branch is `staging` or `master`. Unmerged but closed PRs won't trigger deploy.
 * When a PR to staging or master with the title starting with `[Release]` is merged, gitHub action runs `scripts/build_docker.sh` which is responsible for building and running containers. See [scripts/Readme.md](https://github.com/Chordissimo/chords_api_v2/blob/docker-config/scripts/Readme.md)
