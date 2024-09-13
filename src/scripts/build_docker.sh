@@ -32,4 +32,4 @@ if [[ ${SRV} == ",," ]]; then
   sudo DOMAIN=${DOMAIN} docker compose up -d
 fi
 
-sudo docker system prune -a -f --filter label!="can_delete=true" --volumes
+sudo docker system prune -a -f --filter label="can_delete=true" --volumes
