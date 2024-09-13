@@ -61,6 +61,7 @@ services:
       #- DOMAIN=${DOMAIN}
       dockerfile_inline: |
         FROM nginx:latest
+        LABEL can_delete=true
         ARG ENV
         RUN rm -rf /etc/nginx/inc/* && rm -rf /etc/nginx/conf.d/*
         COPY config/nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
@@ -83,6 +84,8 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongo
+    labels:
+    - "can_delete": "true"    
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_root
@@ -103,6 +106,8 @@ services:
   mongo-express:
     image: mongo-express
     container_name: mongo-express
+    labels:
+    - "can_delete": "true"
     restart: always
     ports:
     - 8081:8081
