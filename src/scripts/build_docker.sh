@@ -9,23 +9,27 @@ sudo ln -sf /home/ci_user/.certbot ./.certbot
 
 if [[ ${SRV} == *"nginx"* ]]; then
   sudo DOMAIN=${DOMAIN} docker compose build nginx --no-cache
+  sudo DOMAIN=${DOMAIN} docker compose down nginx
   sudo DOMAIN=${DOMAIN} docker compose up -d nginx
 fi
 
 if [[ ${SRV} == *"app"* ]]; then
   sudo DOMAIN=${DOMAIN} docker compose build recognizer retriever --no-cache
+  sudo DOMAIN=${DOMAIN} docker compose down recognizer retriever
   sudo DOMAIN=${DOMAIN} docker compose up -d recognizer retriever
 fi
 
 if [[ ${SRV} == *"mongo"* ]]; then
   sudo DOMAIN=${DOMAIN} docker compose build mongo mongo-express --no-cache
+  sudo DOMAIN=${DOMAIN} docker compose down mongo mongo-expres
   sudo DOMAIN=${DOMAIN} docker compose up -d mongo mongo-express
 fi
 
 if [[ ${SRV} == ",," ]]; then
   sudo docker build --no-cache -t app_base -f ./Dockerfile.base .
   sudo DOMAIN=${DOMAIN} docker compose build --no-cache
+  sudo DOMAIN=${DOMAIN} docker compose down
   sudo DOMAIN=${DOMAIN} docker compose up -d
 fi
 
-sudo docker system prune -a -f --filter label!="app_base=dont_delete" --volumes
+sudo docker system prune -a -f --filter label!="can_delete=true" --volumes
