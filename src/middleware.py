@@ -26,12 +26,19 @@ async def validate_user_middleware(
 ):
     if "/adm" in str(request.url) or "openapi.json" in str(request.url):
         return await call_next(request)
+
     token = request.headers.get("Authorization", None)
+    ref = request.headers.get("Referer", None)
+
+    if not token and ref.startswith("https://app.fivechords.com"):
+        return await call_next(request)
+
     user_id = None
 
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="")
+        
     if token and token.startswith("Basic"):
         id_token = token.split(" ").pop()
         decoded_credentials = base64.b64decode(id_token).decode("utf-8")
