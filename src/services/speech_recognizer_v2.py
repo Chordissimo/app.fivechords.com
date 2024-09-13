@@ -22,7 +22,7 @@ class SpeechRecognizerFaster:
         dtype = "float16" if torch.cuda.is_available() \
             else "float32"
         dtype = "float32"
-        model_id = "base"
+        model_id = "large-v3""
         cls.model = FasterWhisperWhithLanguageDetection(
             model_id,
             device=device,
@@ -58,20 +58,20 @@ class SpeechRecognizerFaster:
             cls.__init_if_needed()
             language_code = cls.model.detect_language(audio=samples)
             print("language_code", language_code)
-            if captions_qury is not None and len(captions_qury) > 0:
-                if len(captions_qury) == 1:
-                    return SpeechRecognizerFaster.generate_from_caption(
-                        captions_qury.all()[0]
-                    )
-                caption = next(
-                    (x for x in captions_qury.all()
-                     if language_code in x.code),
-                    None
-                )
-                if caption is not None:
-                    return SpeechRecognizerFaster.generate_from_caption(
-                        caption
-                    )
+            # if captions_qury is not None and len(captions_qury) > 0:
+            #     if len(captions_qury) == 1:
+            #         return SpeechRecognizerFaster.generate_from_caption(
+            #             captions_qury.all()[0]
+            #         )
+            #     caption = next(
+            #         (x for x in captions_qury.all()
+            #          if language_code in x.code),
+            #         None
+            #     )
+            #     if caption is not None:
+            #         return SpeechRecognizerFaster.generate_from_caption(
+            #             caption
+            #         )
 
             segments, _ = cls.model.transcribe(
                 samples,
