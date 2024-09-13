@@ -85,7 +85,7 @@ services:
     image: mongo:latest
     container_name: mongo
     labels:
-    - "can_delete": "true"    
+      can_delete: "true"    
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo_root
@@ -107,7 +107,7 @@ services:
     image: mongo-express
     container_name: mongo-express
     labels:
-    - "can_delete": "true"
+      can_delete: "true"
     restart: always
     ports:
     - 8081:8081
