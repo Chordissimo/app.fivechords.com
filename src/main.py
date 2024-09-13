@@ -62,7 +62,7 @@ if not os.path.exists(DATA_PATH):
 #     )
 
 
-@app.post("/api/recognize/{task_id}", response_model=Response)
+@app.post("/api/recognize/upload/{task_id}", response_model=Response)
 async def recognize(
     request: Request,
     task_id: str,
