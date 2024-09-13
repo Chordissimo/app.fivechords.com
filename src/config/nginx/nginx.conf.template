@@ -21,10 +21,10 @@ server {
   proxy_cache off;
 
   location / {
-#    location /.well-known/acme-challenge/ { 
-#      allow all;
-#      root /var/www/certbot; 
-#    }
+    location /.well-known/acme-challenge/ { 
+      allow all;
+      root /var/www/certbot; 
+    }
 
     location /chords { 
       allow all;
@@ -37,22 +37,15 @@ server {
 
       location /api/recognize {
         limit_conn perserver 2;
-
-        location /api/recognize/upload {}
-        location /api/recognize/youtube {}
-    
-        proxy_pass http://recognizer:8000;
+        location /api/recognize/upload { proxy_pass http://recognizer:8000; }
+        location /api/recognize/youtube { proxy_pass http://recognizer:8000; }
       }
 
       location /api/retrieve {
         limit_conn perserver 8;
-
-        location /api/retrieve/youtube {}
-        location /api/retrieve/status {}
-
-        proxy_pass http://retriever:8002; 
+        location /api/retrieve/youtube { proxy_pass http://retriever:8002; }
+        location /api/retrieve/status { proxy_pass http://retriever:8002; } 
       }
-
     }
 
     location /adm/ {
