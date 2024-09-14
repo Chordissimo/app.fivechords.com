@@ -3,9 +3,13 @@ LABEL app_base=dont_delete
 
 WORKDIR /src
 COPY requirements.txt /src
+RUN mkdir services
+COPY services/snapshot_download.py /src/services
 
 ENV LD_LIBRARY_PATH=/usr/local/lib/python3.9/site-packages/nvidia/cudnn/lixb/
 
 RUN apt-get update && apt-get install -y "g++" libsndfile1 timidity ffmpeg && rm -rf /var/lib/apt/lists/*
-RUN python -m pip install --upgrade pip && python -m pip install numpy==1.26.4 wheel "pymongo[srv]"
+RUN python -m pip install --upgrade pip && python -m pip install numpy==1.26.4 wheel "pymongo[srv]" huggingface_hub tqdm
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN python services/snapshot_download.py
