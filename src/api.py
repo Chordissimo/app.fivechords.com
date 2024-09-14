@@ -1,7 +1,7 @@
 import traceback
 from fastapi import FastAPI, \
     HTTPException, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import Response as FAPIResponse
 from db import database
 from helpers.db import DATABASE_COLLECTIONS
 from middleware import validate_user_middleware
@@ -108,17 +108,11 @@ async def recognize_youtube(
                 tempo=result["tempo"],
                 duration=result["duration"]
             )
-        
-        response = RedirectResponse(
-            url=f"https://app.fivechords.com/api/recognize/youtube/{task_id}",
-            status_code=307
+
+        response = FAPIResponse(
+            content=None,
+            status_code=204
         )
-        print(request.headers["Authorization"])
-        response.headers["Authorization"] = request.headers["Authorization"]
-        print(response.headers["Authorization"])
-        # headers = dict(request.headers)
-        # for key, value in headers.items():
-        #     response.headers[key] = value
 
         return response
         
