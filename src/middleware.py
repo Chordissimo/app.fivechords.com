@@ -30,7 +30,7 @@ async def validate_user_middleware(
     token = request.headers.get("Authorization", None)
     ref = request.headers.get("Referer", None)
 
-    if not token and ref.startswith("https://app.fivechords.com"):
+    if not token and ref and ref.startswith("https://app.fivechords.com"):
         request.state.user_id = "test"
         return await call_next(request)
 
