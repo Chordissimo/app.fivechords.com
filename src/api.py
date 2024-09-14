@@ -108,14 +108,17 @@ async def recognize_youtube(
                 tempo=result["tempo"],
                 duration=result["duration"]
             )
+        
         response = RedirectResponse(
             url=f"https://app.fivechords.com/api/recognize/youtube/{task_id}",
             status_code=307
         )
-       headers = dict(request.headers)
-       for key, value in headers.items():
-           response.headers[key] = value
+        
+        headers = dict(request.headers)
+        for key, value in headers.items():
+            response.headers[key] = value
 
         return response
+        
     except Exception:
         traceback.print_exc()
