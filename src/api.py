@@ -113,8 +113,9 @@ async def recognize_youtube(
             url=f"https://app.fivechords.com/api/recognize/youtube/{task_id}",
             status_code=307
         )
+        print(request.headers["Authorization"])
         response.headers["Authorization"] = request.headers["Authorization"]
-        
+        print(response.headers["Authorization"])
         # headers = dict(request.headers)
         # for key, value in headers.items():
         #     response.headers[key] = value
