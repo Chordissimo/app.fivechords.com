@@ -27,7 +27,8 @@ class SpeechRecognizerFaster:
         cls.model = FasterWhisperWhithLanguageDetection(
             model_id,
             device=device,
-            compute_type=dtype
+            compute_type=dtype,
+            download_root="data"
         )
 
     @staticmethod
