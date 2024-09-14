@@ -22,13 +22,13 @@ class SpeechRecognizerFaster:
         dtype = "float16" if torch.cuda.is_available() \
             else "float32"
         dtype = "float32"
-        model_id = "large-v2"
+#        model_id = "large-v2"
         model_id = "base"
         cls.model = FasterWhisperWhithLanguageDetection(
             model_id,
             device=device,
             compute_type=dtype,
-            download_root="data"
+            download_root="/etc/model_snapshot/" + model_id
         )
 
     @staticmethod
