@@ -28,7 +28,8 @@ class SpeechRecognizerFaster:
             model_id,
             device=device,
             compute_type=dtype,
-            download_root="/etc/model_snapshot/" + model_id
+            download_root="/etc/model_snapshot/" + model_id,
+            local_files_only=True
         )
 
     @staticmethod
