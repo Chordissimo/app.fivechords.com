@@ -23,6 +23,7 @@ class SpeechRecognizerFaster:
             else "float32"
         dtype = "float32"
         model_id = "large-v2"
+        model_id = "base"
         cls.model = FasterWhisperWhithLanguageDetection(
             model_id,
             device=device,
