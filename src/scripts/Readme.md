@@ -1,3 +1,5 @@
+add swaks and diskAlert
+
 # Setting up a fresh server.
 
 ## 1. Pre-installation steps docker 
