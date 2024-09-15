@@ -59,10 +59,10 @@ class SpeechRecognizerFaster:
             cls,
             samples: np.ndarray,
             captions_qury: Optional[CaptionQuery] = None,
-            model_size: Optional[str] = "base"
+            model_id: Optional[str] = "base"
     ) -> List["SpeechRecognizerFaster.Chunk"]:
         try:
-            cls.__init_if_needed()
+            cls.__init_if_needed(model_id=model_id)
             language_code = cls.model.detect_language(audio=samples)
             print("language_code", language_code)
             # if captions_qury is not None and len(captions_qury) > 0:
