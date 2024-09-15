@@ -12,7 +12,7 @@ links = [
 
 for url in links:
     #id = url.split("?")[-1].split("&")[0].split("=")[1]
-    endpoint = "https://app.fivechords.com/api/recognize/youtube/test"
+    endpoint = "https://recognizer/api/recognize/youtube/test"
     request_body = {'url': url}
     headers = {"Referer": "https://app.fivechords.com"}
     response = requests.post(endpoint, headers = headers, json = request_body)
