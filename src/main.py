@@ -162,6 +162,7 @@ async def recognize_youtube(
     video_id = parse_qs(parsed_url.query)["v"][0]
     user_id = request.state.user_id
 
+    logger.info("URL: " + str(request.url))
     database[DATABASE_COLLECTIONS.RECOGNITIONS.name]\
         .insert_one(
         {
