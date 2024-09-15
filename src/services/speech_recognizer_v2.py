@@ -23,8 +23,7 @@ class SpeechRecognizerFaster:
         dtype = "float16" if torch.cuda.is_available() \
             else "float32"
         dtype = "float32"
-#        model_id = "large-v2"
-#        model_id = "base"
+        
         if _MODELS.get(model_id) is None:
             model_id = "base"
         
