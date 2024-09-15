@@ -97,7 +97,7 @@ services:
     ports:
     - 27017:27017
     networks:
-    - airchords
+    - fivechords
     volumes:
     - ./.mongo/data/:/data/db
     - ./.auth/:/auth
