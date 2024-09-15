@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from pytube import CaptionQuery, Caption
 import re
+from models import _MODELS
 
 from services.faster_whisper_extention import \
     FasterWhisperWhithLanguageDetection
@@ -15,7 +16,7 @@ class SpeechRecognizerFaster:
     __device: Optional[torch.device] = None
 
     @classmethod
-    def __init_if_needed(cls):
+    def __init_if_needed(cls,model_id):
         if cls.__initialized:
             return
         device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -23,7 +24,10 @@ class SpeechRecognizerFaster:
             else "float32"
         dtype = "float32"
 #        model_id = "large-v2"
-        model_id = "base"
+#        model_id = "base"
+        if _MODELS.get(model_id) is None:
+            model_id = "base"
+        
         cls.model = FasterWhisperWhithLanguageDetection(
             model_size_or_path="/etc/model_snapshot/" + model_id,
             device=device,
@@ -54,7 +58,8 @@ class SpeechRecognizerFaster:
     def recognize(
             cls,
             samples: np.ndarray,
-            captions_qury: Optional[CaptionQuery] = None
+            captions_qury: Optional[CaptionQuery] = None,
+            model_size: Optional[str] = "base"
     ) -> List["SpeechRecognizerFaster.Chunk"]:
         try:
             cls.__init_if_needed()
