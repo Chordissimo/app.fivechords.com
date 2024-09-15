@@ -149,6 +149,7 @@ async def recognize(
             shutil.rmtree(work_dir)
 
 
+@app.post("/api/recognize/youtube/loader/{task_id}", response_model=Response)
 @app.post("/api/recognize/youtube/{task_id}", response_model=Response)
 async def recognize_youtube(
     request: Request,
@@ -183,9 +184,11 @@ async def recognize_youtube(
         chord_chunks[-1].end = max(int(len(samples) / 16),
                                    chord_chunks[-1].start)
 
+        model_is = "base" if "/api/recognize/youtube/loader/" not in request.url else "large-v2"
         text_chunks = SpeechRecognizer.recognize(
             samples,
-            captions_qury=captions_qury
+            captions_qury=captions_qury,
+            model_id=model_id
         )
 
         if text_chunks and len(text_chunks) > 0:
