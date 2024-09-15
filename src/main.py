@@ -15,6 +15,8 @@ from services import SpeechRecognizer, \
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
+import logging
+logger = logging.getLogger("recognizer")
 
 DB_NAME = "aichords"
 
@@ -185,6 +187,7 @@ async def recognize_youtube(
                                    chord_chunks[-1].start)
 
         model_id = "base" if "/api/recognize/youtube/loader/" not in str(request.url) else "large-v2"
+        logger.info("Using model: " + model_id)
         text_chunks = SpeechRecognizer.recognize(
             samples,
             captions_qury=captions_qury,
