@@ -135,4 +135,4 @@ secrets:
     file: ./.auth/mongo_root_password.txt
 
 networks:
-  airchords:
+  fivechords:
