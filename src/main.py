@@ -187,7 +187,7 @@ async def recognize_youtube(
         chord_chunks[-1].end = max(int(len(samples) / 16),
                                    chord_chunks[-1].start)
 
-        model_id = "base" if "/api/recognize/youtube/loader/" not in request.url.path else "large-v3"
+        model_id = "base" if "/api/recognize/youtube/loader/" not in request.url.path else "large-v2"
         logger.info("Using model: " + model_id + ", " + request.url.path)
         text_chunks = SpeechRecognizer.recognize(
             samples,
