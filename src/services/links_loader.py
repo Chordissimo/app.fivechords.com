@@ -1,6 +1,12 @@
 import requests
 
 links = [
+    "https://www.youtube.com/watch?v=eVli-tstM5E&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=1&pp=iAQB8AUB",
+    "https://www.youtube.com/watch?v=q3zqJs7JUCQ&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=2&pp=iAQB8AUB",
+    "https://www.youtube.com/watch?v=IXJTaHySW8I&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=3&pp=iAQB8AUB",
+    "https://www.youtube.com/watch?v=Oa_RSwwpPaA&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=4&pp=iAQB8AUB",
+    "https://www.youtube.com/watch?v=huGd4efgdPA&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=5&pp=iAQB8AUB",
+    "https://www.youtube.com/watch?v=o3IlfLsaU28&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=6&pp=iAQB8AUB",
     "https://www.youtube.com/watch?v=H58vbez_m4E&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=7&pp=iAQB8AUB",
     "https://www.youtube.com/watch?v=t7bQwwqW-Hc&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=8&pp=iAQB8AUB",
     "https://www.youtube.com/watch?v=1IUCyniCWzg&list=PLyORnIW1xT6wqvszJbCdLdSjylYMf3sNZ&index=9&pp=iAQB8AUB",
