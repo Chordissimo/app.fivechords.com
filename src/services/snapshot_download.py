@@ -27,7 +27,7 @@ _MODELS = {
      "distil-large-v3": "Systran/faster-distil-whisper-large-v3",
 }
 
-model_sizes = ["base","small","medium","distil-large-v2"]
+model_sizes = ["base","small","medium","distil-large-v2","distil-large-v3"]
 
 for size in model_sizes:
      repo_id = _MODELS.get(size)
