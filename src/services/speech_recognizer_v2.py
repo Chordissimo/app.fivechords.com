@@ -26,14 +26,13 @@ class SpeechRecognizerFaster:
         
         if _MODELS.get(model_id) is None:
             model_id = "medium"
-        
+        torch.cuda.empty_cache()
         cls.model = FasterWhisperWhithLanguageDetection(
             model_size_or_path="/etc/model_snapshot/" + model_id,
             device=device,
             compute_type=dtype,
             local_files_only=True
         )
-        torch.cuda.empty_cache()
         # del cls.model.encoder
         # del cls.model.decoder
 
