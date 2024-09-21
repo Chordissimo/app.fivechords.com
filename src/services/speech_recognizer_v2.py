@@ -30,6 +30,8 @@ class SpeechRecognizerFaster:
         cls.model = FasterWhisperWhithLanguageDetection(
             model_size_or_path="/etc/model_snapshot/" + model_id,
             device=device,
+            device_index=[0,1],
+            num_workers=2,
             compute_type=dtype,
             local_files_only=True
         )
