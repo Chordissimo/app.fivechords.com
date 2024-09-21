@@ -67,7 +67,7 @@ class SpeechRecognizerFaster:
     ) -> List["SpeechRecognizerFaster.Chunk"]:
         try:
             cls.__init_if_needed(model_id=model_id)
-            language_code = cls.model.detect_language(audio=samples)
+            # language_code = cls.model.detect_language(audio=samples)
             # print("model: ",model_id)
             # if captions_qury is not None and len(captions_qury) > 0:
             #     if len(captions_qury) == 1:
