@@ -5,6 +5,7 @@ import torch
 from pytube import CaptionQuery, Caption
 import re
 from models import _MODELS
+import gc
 
 from services.faster_whisper_extention import \
     FasterWhisperWhithLanguageDetection
@@ -87,6 +88,8 @@ class SpeechRecognizerFaster:
                 condition_on_previous_text=False,
                 word_timestamps=True,
             )
+            
+            gc.collect()
             
             return [
                 SpeechRecognizerFaster.Chunk(
