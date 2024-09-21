@@ -25,7 +25,7 @@ class SpeechRecognizerFaster:
         dtype = "float32"
         
         if _MODELS.get(model_id) is None:
-            model_id = "base"
+            model_id = "medium"
         
         cls.model = FasterWhisperWhithLanguageDetection(
             model_size_or_path="/etc/model_snapshot/" + model_id,
@@ -33,6 +33,9 @@ class SpeechRecognizerFaster:
             compute_type=dtype,
             local_files_only=True
         )
+        del cls.model.encoder
+        del cls.model.decoder
+        torch.cuda.empty_cache()
 
     @staticmethod
     def clean_text(x: str) -> str:
