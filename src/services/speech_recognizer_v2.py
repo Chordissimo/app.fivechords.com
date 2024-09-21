@@ -33,9 +33,9 @@ class SpeechRecognizerFaster:
             compute_type=dtype,
             local_files_only=True
         )
-        del cls.model.encoder
-        del cls.model.decoder
         torch.cuda.empty_cache()
+        # del cls.model.encoder
+        # del cls.model.decoder
 
     @staticmethod
     def clean_text(x: str) -> str:
