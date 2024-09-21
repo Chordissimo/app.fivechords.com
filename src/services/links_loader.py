@@ -1,5 +1,4 @@
 import requests
-import datetime
 from links import _LINKS
 
 for url in links:
