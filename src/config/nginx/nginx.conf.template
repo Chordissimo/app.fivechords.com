@@ -36,7 +36,7 @@ server {
       include /etc/nginx/inc/headers.conf;
 
       location /api/recognize {
-        limit_conn perserver 2;
+        limit_conn perserver 1;
         location /api/recognize/upload { proxy_pass http://recognizer:8000; }
         location /api/recognize/youtube { proxy_pass http://recognizer:8000; }
       }
