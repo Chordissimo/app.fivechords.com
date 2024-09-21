@@ -68,7 +68,7 @@ class SpeechRecognizerFaster:
         try:
             cls.__init_if_needed(model_id=model_id)
             language_code = cls.model.detect_language(audio=samples)
-            print("model: ",model_id)
+            # print("model: ",model_id)
             # if captions_qury is not None and len(captions_qury) > 0:
             #     if len(captions_qury) == 1:
             #         return SpeechRecognizerFaster.generate_from_caption(
@@ -86,7 +86,8 @@ class SpeechRecognizerFaster:
 
             segments, _ = cls.model.transcribe(
                 samples,
-                language=language_code,
+                # language=language_code,
+                language="en",
                 condition_on_previous_text=False,
                 word_timestamps=True,
             )
