@@ -26,15 +26,15 @@ class SpeechRecognizerFaster:
         
         if _MODELS.get(model_id) is None:
             model_id = "medium"
+        
         torch.cuda.empty_cache()
+        
         cls.model = FasterWhisperWhithLanguageDetection(
             model_size_or_path="/etc/model_snapshot/" + model_id,
             device=device,
             compute_type=dtype,
             local_files_only=True
         )
-        # del cls.model.encoder
-        # del cls.model.decoder
 
     @staticmethod
     def clean_text(x: str) -> str:
@@ -87,7 +87,9 @@ class SpeechRecognizerFaster:
                 condition_on_previous_text=False,
                 word_timestamps=True,
             )
-
+            del cls.model.encoder
+            del cls.model.decoder
+            
             return [
                 SpeechRecognizerFaster.Chunk(
                     text=x.word,
@@ -99,6 +101,9 @@ class SpeechRecognizerFaster:
             ]
         except Exception as e:
             raise SpeechRecognizerFaster.Exception(message=e.__str__())
+        finally:
+            del cls.model.encoder
+            del cls.model.decoder
 
     @dataclass
     class Chunk:
