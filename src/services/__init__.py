@@ -45,7 +45,7 @@ async def download_from_youtube(
 
 def resample(filepath: PathLike, root: str) -> PathLike:
     resampled_filepath = os.path.join(root, f"{uuid.uuid4().__str__()}.wav")
-    ex = f"ffmpeg -i {filepath} -ar 16000 -ac 1 -y {resampled_filepath} > /dev/null"
+    ex = f"ffmpeg -i {filepath} -ar 16000 -ac 1 -y {resampled_filepath} > /dev/null 2>&1"
     os.system(ex)
     return resampled_filepath
 
