@@ -87,8 +87,6 @@ class SpeechRecognizerFaster:
                 condition_on_previous_text=False,
                 word_timestamps=True,
             )
-            del cls.model.encoder
-            del cls.model.decoder
             
             return [
                 SpeechRecognizerFaster.Chunk(
@@ -101,9 +99,6 @@ class SpeechRecognizerFaster:
             ]
         except Exception as e:
             raise SpeechRecognizerFaster.Exception(message=e.__str__())
-        finally:
-            del cls.model.encoder
-            del cls.model.decoder
 
     @dataclass
     class Chunk:
