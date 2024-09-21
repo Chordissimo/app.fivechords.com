@@ -26,7 +26,7 @@ class SpeechRecognizerFaster:
         dtype = "float32"
         
         if _MODELS.get(model_id) is None:
-            model_id = "medium"
+            model_id = "base"
         
         torch.cuda.empty_cache()
         
