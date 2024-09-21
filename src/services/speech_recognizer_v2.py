@@ -6,7 +6,7 @@ from pytube import CaptionQuery, Caption
 import re
 from models import _MODELS
 import gc
-import os
+# import os
 
 from services.faster_whisper_extention import \
     FasterWhisperWhithLanguageDetection
@@ -30,7 +30,7 @@ class SpeechRecognizerFaster:
             model_id = "base"
         
         torch.cuda.empty_cache()
-        os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "garbage_collection_threshold:0.9,max_split_size_mb:512"
+        # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "garbage_collection_threshold:0.9,max_split_size_mb:512"
         
         cls.model = FasterWhisperWhithLanguageDetection(
             model_size_or_path="/etc/model_snapshot/" + model_id,
@@ -90,7 +90,7 @@ class SpeechRecognizerFaster:
                 condition_on_previous_text=False,
                 word_timestamps=True,
             )
-            
+            del cls.model
             gc.collect()
             
             return [
