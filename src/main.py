@@ -16,7 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import logging
-logger = logging.getLogger("recognizer")
+import sys
 
 DB_NAME = "aichords"
 
@@ -26,6 +26,8 @@ app = FastAPI(title="FiveChords - recognizer",
 
 origins = ['*']
 
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logger = logging.getLogger()
 
 with open("/etc/auth/auth.conf", "r") as f:
     d = f.read().strip()
