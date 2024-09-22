@@ -9,6 +9,11 @@ from models import Response, StatusResponse, YoutubeRequest
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
+import logging
+import sys
+
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logger = logging.getLogger()
 
 DB_NAME = "aichords"
 
