@@ -9,7 +9,11 @@ import firebase_admin
 from firebase_admin import auth, credentials
 from firebase_admin._token_gen import ExpiredIdTokenError
 from pymongo.database import Database
+import logging
+import sys
 
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logger = logging.getLogger()
 
 cred = credentials.Certificate("/etc/auth/prochords.json")
 firebase_admin.initialize_app(cred)
