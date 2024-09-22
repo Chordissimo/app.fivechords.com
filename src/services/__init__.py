@@ -12,6 +12,11 @@ import numpy as np
 from .chord_recognizer import ChordsRecognizer, ChordsRecognizerAutochord, \
     ChordsRecognizerChordino
 
+import logging
+import sys
+
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logger = logging.getLogger()
 
 MAX_SECONDS = 600
 
