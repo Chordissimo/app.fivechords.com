@@ -2,4 +2,5 @@ FROM app_base:latest
 LABEL can_delete=true
 WORKDIR /src
 COPY ./services/links_loader.py /src
+COPY ./services/links.py /src
 CMD ["python", "links_loader.py"]
