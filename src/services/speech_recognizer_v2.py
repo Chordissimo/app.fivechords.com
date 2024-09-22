@@ -7,6 +7,11 @@ import re
 from models import _MODELS
 import gc
 # import os
+import logging
+import sys
+
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logger = logging.getLogger()
 
 from services.faster_whisper_extention import \
     FasterWhisperWhithLanguageDetection
