@@ -1,3 +1,19 @@
 _LINKS = [
-"https://www.youtube.com/playlist?list=PLOEdojp8A-GoyfaoONiwLmpY-IQRLzQMb"
+  "https://www.youtube.com/playlist?list=PLmB6td997u3kzBhf3AqjQmhJ5YT2ciSse",
+  "https://www.youtube.com/playlist?list=PLE6EB681577F21B3C",
+  "https://www.youtube.com/playlist?list=PLmB6td997u3kzBhf3AqjQmhJ5YT2ciSse",
+  "https://www.youtube.com/playlist?list=PLdEiuPxBVWSiUBirMsRAVE066fTq3IFkT",
+  "https://www.youtube.com/playlist?list=PLX_x9w1pLQ_xnabsz_xmOEFqTIVN74m0X",
+  "https://www.youtube.com/playlist?list=PL597E0BDDC1D74ED2",
+  "https://www.youtube.com/playlist?list=PLsI57MJaO-HqzA65YYhoJnAG5qh3u6Wo-",
+  "https://www.youtube.com/playlist?list=PLE1179D279C08BE4A",
+  "https://www.youtube.com/playlist?list=PLyv_bY6d1l4p_UPtQLOnVpOEcj34e-Usx",
+  "https://www.youtube.com/playlist?list=PLYq_mcte9NvDA2Xi5Qjl1DrH5LuDKDlAI",
+  "https://www.youtube.com/playlist?list=PLP02sRgldWRb9LjuQgJ4AfxCd4cxygDrA",
+  "https://www.youtube.com/playlist?list=PLe1CT6SJJchqaxd3mzfRWSVntw-tPlkTK",
+  "https://www.youtube.com/playlist?list=PL_yH9Q5syvqhoHce-Kj0jCciNCvBNT5Ug",
+  "https://www.youtube.com/playlist?list=PLdshE9Fnm-qyACgmWRd9pRE3EzKDK1u0X",
+  "https://www.youtube.com/playlist?list=PLAY8OJHt90IL34G68R1ObMKRJA906FDQ6",
+  "https://www.youtube.com/playlist?list=PLcb1ZAWRDY7XtwMJ-Dw82WC0VgTDsRtBH",
+  "https://www.youtube.com/playlist?list=PL08230BC08BF305AC"
 ]
