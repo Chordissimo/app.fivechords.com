@@ -3,7 +3,11 @@ from typing import List, Optional
 # import autochord
 from chord_extractor.extractors import Chordino
 from abc import ABC, abstractmethod
+import logging
+import sys
 
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logger = logging.getLogger()
 
 class ChordsRecognizer(ABC):
 
