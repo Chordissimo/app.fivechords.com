@@ -12,7 +12,7 @@ from pymongo.database import Database
 import logging
 import sys
 
-logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger()
 
 cred = credentials.Certificate("/etc/auth/prochords.json")
