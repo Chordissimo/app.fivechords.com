@@ -2,6 +2,7 @@ import requests
 from pytube import Playlist
 from links import _LINKS
 from datetime import datetime, timedelta
+import time
 import logging
 import sys
 
@@ -25,6 +26,7 @@ for p in _LINKS:
         diff = finish - start
         diffs.append(diff.total_seconds())
         stdout.info("Status code: " + str(response.status_code) + " , commpleted in: " + str(diff.total_seconds()))
+        time.sleep(3)
 
     stdout.info("Done")
 
