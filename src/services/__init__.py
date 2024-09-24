@@ -15,10 +15,10 @@ from .chord_recognizer import ChordsRecognizer, ChordsRecognizerAutochord, \
 import logging
 import sys
 
-logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger()
 
-MAX_SECONDS = 600
+MAX_SECONDS = 6000
 
 
 class FileReadingException(Exception):
