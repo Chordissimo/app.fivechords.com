@@ -10,7 +10,7 @@ import gc
 import logging
 import sys
 
-logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger()
 
 from services.faster_whisper_extention import \
