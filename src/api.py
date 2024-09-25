@@ -11,10 +11,11 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import logging
 import sys
+from models import _LOGGING_LEVEL
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.INFO,
+    level=_LOGGING_LEVEL,
     datefmt='%Y-%m-%d %H:%M:%S',
     stream=sys.stdout
 )
