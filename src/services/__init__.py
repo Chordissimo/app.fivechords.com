@@ -10,8 +10,7 @@ from typing import Any, Tuple
 from models import _LOGGING_LEVEL
 
 import numpy as np
-from .chord_recognizer import ChordsRecognizer, ChordsRecognizerAutochord, \
-    ChordsRecognizerChordino
+from .chord_recognizer import ChordsRecognizer, ChordsRecognizerAutochord, ChordsRecognizerChordino
 
 import logging
 import sys
