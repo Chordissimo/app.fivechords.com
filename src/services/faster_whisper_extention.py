@@ -1,6 +1,16 @@
 from faster_whisper import WhisperModel
 import numpy as np
+from models import _MODELS
+import logging
+import sys
 
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=_LOGGING_LEVEL,
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout
+)
+logger = logging.getLogger()
 
 class FasterWhisperWhithLanguageDetection(WhisperModel):
     def detect_language(self, audio: np.ndarray) -> str:
