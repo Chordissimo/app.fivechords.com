@@ -26,7 +26,12 @@ app = FastAPI(title="FiveChords - recognizer",
 
 origins = ['*']
 
-logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout
+)
 logger = logging.getLogger()
 
 with open("/etc/auth/auth.conf", "r") as f:
