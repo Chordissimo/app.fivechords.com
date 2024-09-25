@@ -16,39 +16,28 @@ headers = {
 
 diffs = []
 
-try:
-    request_body = {'url': "https://www.youtube.com/watch?v=YwEsPizQVNc"}
-    response = requests.post(recognizer_endpoint, headers = headers, json = request_body)
-    stdout.info("Status code: " + str(response.status_code) + " , commpleted in: " + str(diff.total_seconds()))
-    
-except requests.exceptions.RequestException as err:
-    stdout.error(err)
-    pass
+for p in _LINKS:
+    playlist = Playlist(p)
+    stdout.info("Starting playlist: " + p)
 
-stdout.info("Done")
-
-# for p in _LINKS:
-#     playlist = Playlist(p)
-#     stdout.info("Starting playlist: " + p)
-
-#     for url in playlist.video_urls:
-#         stdout.info("Processing: " + url)
-#         request_body = {'url': url}
-#         start = datetime.now()
+    for url in playlist.video_urls:
+        stdout.info("Processing: " + url)
+        request_body = {'url': url}
+        start = datetime.now()
         
-#         try:
-#             response = requests.post(recognizer_endpoint, headers = headers, json = request_body)
-#             finish = datetime.now()
-#             diff = finish - start
-#             diffs.append(diff.total_seconds())
-#             stdout.info("Status code: " + str(response.status_code) + " , commpleted in: " + str(diff.total_seconds()))
+        try:
+            response = requests.post(recognizer_endpoint, headers = headers, json = request_body)
+            finish = datetime.now()
+            diff = finish - start
+            diffs.append(diff.total_seconds())
+            stdout.info("Status code: " + str(response.status_code) + " , commpleted in: " + str(diff.total_seconds()))
             
-#         except requests.exceptions.RequestException as err:
-#             stdout.error(err)
-#             pass
+        except requests.exceptions.RequestException as err:
+            stdout.error(err)
+            pass
         
-#         time.sleep(3)
+        time.sleep(3)
 
-#     stdout.info("Done")
+    stdout.info("Done")
 
-# stdout.info("Average processing time: " + str(sum(diffs) / len(diffs)))
+stdout.info("Average processing time: " + str(sum(diffs) / len(diffs)))
