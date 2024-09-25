@@ -11,10 +11,11 @@ from firebase_admin._token_gen import ExpiredIdTokenError
 from pymongo.database import Database
 import logging
 import sys
+from models import _LOGGING_LEVEL
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.INFO,
+    level=_LOGGING_LEVEL,
     datefmt='%Y-%m-%d %H:%M:%S',
     stream=sys.stdout
 )
