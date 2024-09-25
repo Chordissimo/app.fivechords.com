@@ -6,7 +6,6 @@ from pytube import CaptionQuery, Caption
 import re
 from models import _MODELS, _LOGGING_LEVEL
 import gc
-# import os
 import logging
 import sys
 
