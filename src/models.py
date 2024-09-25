@@ -1,7 +1,8 @@
 from typing import List, Optional
 from pydantic import BaseModel
+import logging
 
-_LOGGING_LEVEL = "DEBUG"
+_LOGGING_LEVEL = logging.DEBUG
 
 _MODELS = {
      "tiny.en": "Systran/faster-whisper-tiny.en",
