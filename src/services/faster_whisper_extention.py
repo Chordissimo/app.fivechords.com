@@ -3,6 +3,7 @@ import numpy as np
 from models import _MODELS
 import logging
 import sys
+from models import _LOGGING_LEVEL
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
