@@ -8,6 +8,7 @@ from pytube import CaptionQuery, Caption
 import re
 import logging
 import sys
+from models import _LOGGING_LEVEL
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
