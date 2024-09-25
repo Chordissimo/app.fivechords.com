@@ -25,6 +25,8 @@ except requests.exceptions.RequestException as err:
     stdout.error(err)
     pass
 
+stdout.info("Done")
+
 # for p in _LINKS:
 #     playlist = Playlist(p)
 #     stdout.info("Starting playlist: " + p)
