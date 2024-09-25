@@ -6,7 +6,12 @@ from abc import ABC, abstractmethod
 import logging
 import sys
 
-logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=_LOGGING_LEVEL,
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout
+)
 logger = logging.getLogger()
 
 class ChordsRecognizer(ABC):
