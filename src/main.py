@@ -97,8 +97,7 @@ async def recognize(
         filepath = resample(filepath, root=work_dir)
         samples = get_samples(filepath=filepath)
         chord_chunks = ChordsRecognizerChordino.recognize(filepath)
-        chord_chunks[-1].end = max(int(len(samples) / 16),
-                                   chord_chunks[-1].start)
+        chord_chunks[-1].end = max(int(len(samples) / 16), chord_chunks[-1].start)
 
         tempo = get_tempo(samples)
         text_chunks = SpeechRecognizer.recognize(samples)
@@ -192,8 +191,7 @@ async def recognize_youtube(
         samples = get_samples(filepath=filepath)
         chord_chunks = ChordsRecognizerChordino.recognize(filepath)
         tempo = get_tempo(samples)
-        chord_chunks[-1].end = max(int(len(samples) / 16),
-                                   chord_chunks[-1].start)
+        chord_chunks[-1].end = max(int(len(samples) / 16), chord_chunks[-1].start)
 
         model_id = "distil-large-v2" if "/api/recognize/youtube/loader/" not in request.url.path else "distil-large-v2"
         logger.info("Using model: " + model_id + ", " + request.url.path)
