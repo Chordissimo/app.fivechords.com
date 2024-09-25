@@ -18,8 +18,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger()
 
-from services.faster_whisper_extention import \
-    FasterWhisperWhithLanguageDetection
+from services.faster_whisper_extention import FasterWhisperWhithLanguageDetection
 
 
 class SpeechRecognizerFaster:
@@ -32,15 +31,13 @@ class SpeechRecognizerFaster:
         if cls.__initialized:
             return
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        dtype = "float16" if torch.cuda.is_available() \
-            else "float32"
+        # dtype = "float16" if torch.cuda.is_available() else "float32"
         dtype = "float32"
         
         if _MODELS.get(model_id) is None:
             model_id = "base"
         
         torch.cuda.empty_cache()
-        # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "garbage_collection_threshold:0.9,max_split_size_mb:512"
         
         cls.model = FasterWhisperWhithLanguageDetection(
             model_size_or_path="/etc/model_snapshot/" + model_id,
@@ -52,8 +49,7 @@ class SpeechRecognizerFaster:
     @staticmethod
     def clean_text(x: str) -> str:
         pattern = r'\([^)]*\)|\{[^}]*\}|\[[^\]]*\]'
-        return re.sub(
-            pattern, '', x.replace("♪", "").replace("\n", " ")).strip()
+        return re.sub(pattern, '', x.replace("♪", "").replace("\n", " ")).strip()
 
     @classmethod
     def generate_from_caption(
@@ -96,21 +92,19 @@ class SpeechRecognizerFaster:
 
             segments, _ = cls.model.transcribe(
                 samples,
-                # language=language_code,
-                language="en",
-                condition_on_previous_text=False,
-                word_timestamps=True,
+                # language = language_code,
+                language = "en",
+                condition_on_previous_text = False,
+                word_timestamps = True,
             )
             del cls.model
             gc.collect()
             
             return [
                 SpeechRecognizerFaster.Chunk(
-                    text=x.word,
-                    start=int(x.start *
-                              1000) if x.start is not None else None,
-                    end=int(x.end *
-                            1000) if x.end is not None else None
+                    text = x.word,
+                    start = int(x.start * 1000) if x.start is not None else None,
+                    end = int(x.end * 1000) if x.end is not None else None
                 ) for segment in segments for x in segment.words
             ]
         except Exception as e:
