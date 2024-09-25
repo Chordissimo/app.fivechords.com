@@ -9,7 +9,10 @@ import sys
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 stdout = logging.getLogger()
 recognizer_endpoint = "http://recognizer:8000/api/recognize/youtube/loader/test"
-headers = {"Referer": "https://app.fivechords.com"}
+headers = {
+    "Referer": "https://app.fivechords.com",
+    "User-Agent": "Links Downloader 1.0"
+}
 
 diffs = []
 
