@@ -10,7 +10,12 @@ import gc
 import logging
 import sys
 
-logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout
+)
 logger = logging.getLogger()
 
 from services.faster_whisper_extention import \
