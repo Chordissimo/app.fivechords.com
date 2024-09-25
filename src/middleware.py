@@ -12,7 +12,12 @@ from pymongo.database import Database
 import logging
 import sys
 
-logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout
+)
 logger = logging.getLogger()
 
 cred = credentials.Certificate("/etc/auth/prochords.json")
