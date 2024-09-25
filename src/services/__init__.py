@@ -46,7 +46,7 @@ async def download_from_youtube(
 ) -> Tuple[PathLike, CaptionQuery]:
     loop = asyncio.get_event_loop()
     future = loop.create_future()
-    yt = YouTube(url=url, on_complete_callback=lambda y, x: loop.call_soon_threadsafe(future.set_result, x, y, None))
+    yt = YouTube(url=url, on_complete_callback=lambda y, x: loop.call_soon_threadsafe(future.set_result, x))
 # lambda status: loop.call_soon_threadsafe(future.set_result, x, None))
 
     # future = asyncio.Future()
