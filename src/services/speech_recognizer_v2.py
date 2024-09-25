@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from pytube import CaptionQuery, Caption
 import re
-from models import _MODELS
+from models import _MODELS, _LOGGING_LEVEL
 import gc
 # import os
 import logging
@@ -12,7 +12,7 @@ import sys
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.INFO,
+    level=_LOGGING_LEVEL,
     datefmt='%Y-%m-%d %H:%M:%S',
     stream=sys.stdout
 )
