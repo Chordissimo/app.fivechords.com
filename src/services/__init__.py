@@ -7,6 +7,7 @@ import asyncio
 from os import PathLike
 import os
 from typing import Any, Tuple
+from models import _LOGGING_LEVEL
 
 import numpy as np
 from .chord_recognizer import ChordsRecognizer, ChordsRecognizerAutochord, \
@@ -17,7 +18,7 @@ import sys
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
-    level=logging.INFO,
+    level=_LOGGING_LEVEL,
     datefmt='%Y-%m-%d %H:%M:%S',
     stream=sys.stdout
 )
