@@ -5,6 +5,7 @@ from chord_extractor.extractors import Chordino
 from abc import ABC, abstractmethod
 import logging
 import sys
+from models import _LOGGING_LEVEL
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
