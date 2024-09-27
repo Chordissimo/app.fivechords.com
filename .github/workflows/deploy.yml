@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 60
     env:
       NAMESPACE: ${{ github.ref == 'refs/heads/staging' && 'get_st' || 'get' }}
-      SERVER: ${{ github.ref == 'refs/heads/staging' && '209.51.170.206' || '184.105.181.159' }}
+      SERVER: ${{ github.ref == 'refs/heads/staging' && '209.51.170.206' || '209.51.170.206' }}
       USER: "ci_user" 
       SSH_KEY: ${{ github.ref == 'refs/heads/staging' && secrets.STAGING_USER_KEY || secrets.PRODUCTION_USER_KEY }}
       TAGERT_DIR: ${{ github.ref == 'refs/heads/staging' && 'src_stage' || 'src' }}
