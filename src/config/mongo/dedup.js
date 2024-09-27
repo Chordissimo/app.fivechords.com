@@ -1,3 +1,4 @@
+use aichords;
 db.RECOGNITIONS.aggregate([
   { $sort: { video_id: 1, _id: -1 } }, 
   { $group: { _id: "$video_id", dups: { $push: "$_id" }, count: { $sum: 1 } } },
