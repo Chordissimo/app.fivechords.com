@@ -56,4 +56,4 @@ jobs:
         run: |-
           echo "$SSH_KEY" | tr -d '\r' > ssh_key
           chmod 0600 ssh_key
-          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./config/chords $USER@$SERVER:$TAGERT_DIR/config
+          rsync -a -e "ssh -o StrictHostKeyChecking=no -i ssh_key" ./src/config/chords $USER@$SERVER:$TAGERT_DIR/config
