@@ -102,6 +102,7 @@ services:
     - ./.mongo/data/:/data/db
     - ./.auth/:/auth
     - ./config/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    - ./config/mongo/dedup.js:dedup.js:ro
 
   mongo-express:
     image: mongo-express
