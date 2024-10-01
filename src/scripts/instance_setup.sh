@@ -33,18 +33,18 @@ mkdir -p /etc/nginx/inc && \
 cp $BASE_DIR/config/nginx/headers.conf /etc/nginx/inc/ && \
 cp $BASE_DIR/config/nginx/auth.conf /etc/nginx/inc/ && \
 
-# ------------ Gunicorn installation ------------
+# ------------ Supervisor installation ------------
 apt-get -y install supervisor && \
-cp $BASE_DIR/config/gunicorn/gunicorn.conf /etc/supervisor/conf.d/ && \
-chmod +x $BASE_DIR/config/gunicorn/apid_conf.bash && \
-chmod +x $BASE_DIR/config/gunicorn/maind_conf.bash && \
+cp $BASE_DIR/config/supervisor/supervisord.conf /etc/supervisor/conf.d/ && \
+chmod +x $BASE_DIR/config/supervisor/apid_conf.bash && \
+chmod +x $BASE_DIR/config/supervisor/maind_conf.bash && \
+chmod +x $BASE_DIR/config/supervisor/mongod_conf.bash && \
 mkdir -p /var/log/5chords && \
-pip install --upgrade pip && \
-pip install gunicorn && \
 
 # ------------ Application installation ------------
+pip install --upgrade pip && \
 apt-get install -y git "g++" libsndfile1 timidity ffmpeg nginx && \
-pip install numpy==1.26.4 wheel "pymongo[srv]" && \
+pip install gunicorn numpy==1.26.4 wheel "pymongo[srv]" && \
 apt install -y libpython3.10-dev && \
 pip install --ignore-requires-python chord-extractor==0.1.2 && \
 pip install --no-cache-dir -r $BASE_DIR/scripts/requirements.txt && \
@@ -58,14 +58,9 @@ mkdir -p /var/www/chords && \
 cp $BASE_DIR/config/chords/* /var/www/chords && \
 
 # ------------ Start services ------------
-service mongod start && \
-mongosh "mongodb://127.0.0.1:27017/aichords" --file config/mongo/mongo-init.js && \
-
 service nginx start && \
-
-service supervisor start && \
-service mongod status
-service nginx status
-
+supervisorctl update && \
 sleep 5
+mongosh "mongodb://127.0.0.1:27017/aichords" --file config/mongo/mongo-init.js && \
 supervisorctl status all
+service nginx status
