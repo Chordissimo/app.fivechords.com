@@ -1,6 +1,5 @@
 import traceback
-from fastapi import FastAPI, \
-    HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import Response as FAPIResponse
 from db import database
 from helpers.db import DATABASE_COLLECTIONS
@@ -11,7 +10,7 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import logging
 import sys
-from models import _LOGGING_LEVEL
+from models import _LOGGING_LEVEL, _PATHS
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -30,7 +29,7 @@ app = FastAPI(title='FiveChords - retriver',
 origins = ['*']
 
 
-with open("/etc/auth/auth.conf", "r") as f:
+with open(_PATHS.get("auth"), "r") as f:
     d = f.read().strip()
     basic_login, basic_password = d.split(":")
 
@@ -50,17 +49,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# @app.get("/api/health_check", response_model=Response)
-# async def health_check() -> Response:
-#     return Response(
-#         chords=[],
-#         text=[],
-#         tempo=0.0,
-#         duration=0.0
-#     )
-
 
 @app.get("/api/retrieve/status/{task_id}", response_model=StatusResponse)
 async def get_status(request: Request, task_id: str) -> StatusResponse:

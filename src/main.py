@@ -17,9 +17,7 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import logging
 import sys
-from models import _LOGGING_LEVEL
-
-DB_NAME = "aichords"
+from models import _LOGGING_LEVEL, _PATHS
 
 app = FastAPI(title="FiveChords - recognizer",
               docs_url='/adm/recognize',
@@ -35,7 +33,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger()
 
-with open("/etc/auth/auth.conf", "r") as f:
+with open(_PATHS.get("auth"), "r") as f:
     d = f.read().strip()
     basic_login, basic_password = d.split(":")
 
@@ -56,10 +54,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DATA_PATH = "data"
-
-if not os.path.exists(DATA_PATH):
-    os.makedirs(DATA_PATH)
+if not os.path.exists(_PATHS.get("workdir")):
+    os.makedirs(_PATHS.get("workdir"))
 
 
 # @app.get("/health_check", response_model=Response)
@@ -79,7 +75,7 @@ async def recognize(
     file: UploadFile = File(...)
 ) -> Response:
     user_id = request.state.user_id
-    work_dir = os.path.join(DATA_PATH, uuid.uuid4().__str__())
+    work_dir = os.path.join(_PATHS.get("workdir"), uuid.uuid4().__str__())
     chord_chunks, tempo = [], 0
     database[DATABASE_COLLECTIONS.RECOGNITIONS.name].insert_one(
         {
@@ -179,7 +175,7 @@ async def recognize_youtube(
             "completed": False
         })
 
-    work_dir = os.path.join(DATA_PATH, uuid.uuid4().__str__())
+    work_dir = os.path.join(_PATHS.get("workdir"), uuid.uuid4().__str__())
     chord_chunks, tempo = [], 0
     try:
         os.mkdir(work_dir)

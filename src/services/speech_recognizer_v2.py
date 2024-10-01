@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from pytube import CaptionQuery, Caption
 import re
-from models import _MODELS, _LOGGING_LEVEL
+from models import _MODELS, _LOGGING_LEVEL, _PATHS
 import gc
 import logging
 import sys
@@ -30,7 +30,6 @@ class SpeechRecognizerFaster:
         if cls.__initialized:
             return
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        # dtype = "float16" if torch.cuda.is_available() else "float32"
         dtype = "float32"
         
         if _MODELS.get(model_id) is None:
@@ -39,7 +38,7 @@ class SpeechRecognizerFaster:
         torch.cuda.empty_cache()
         
         cls.model = FasterWhisperWhithLanguageDetection(
-            model_size_or_path="/etc/model_snapshot/" + model_id,
+            model_size_or_path=_PATHS.get("model_snapshot") + model_id,
             device=device,
             compute_type=dtype,
             local_files_only=True

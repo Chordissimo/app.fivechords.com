@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import List, Optional
-# import autochord
 from chord_extractor.extractors import Chordino
 from abc import ABC, abstractmethod
 import logging

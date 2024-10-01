@@ -11,7 +11,7 @@ from firebase_admin._token_gen import ExpiredIdTokenError
 from pymongo.database import Database
 import logging
 import sys
-from models import _LOGGING_LEVEL
+from models import _LOGGING_LEVEL, _REFS, _PATHS
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -21,10 +21,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger()
 
-cred = credentials.Certificate("/etc/auth/prochords.json")
+cred = credentials.Certificate(_PATHS.get("google_services"))
 firebase_admin.initialize_app(cred)
 
-with open("/etc/auth/auth.conf", "r") as f:
+with open(_PATHS.get("auth"), "r") as f:
     d = f.read().strip()
     basic_login, basic_password = d.split(":")
 
@@ -39,8 +39,9 @@ async def validate_user_middleware(
 
     token = request.headers.get("Authorization", None)
     ref = request.headers.get("Referer", None)
+    test_refs = [] if not ref else list(filter(lambda x: ref.startswith(x), _REFS))
 
-    if not token and ref and ref.startswith("https://app.fivechords.com"):
+    if not token and ref and len(test_refs) > 0:
         request.state.user_id = "test"
         return await call_next(request)
 

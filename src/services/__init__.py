@@ -1,7 +1,6 @@
 from pytube import YouTube, CaptionQuery
 import uuid
 import librosa
-# from .speech_recognizer import SpeechRecognizer
 from .speech_recognizer_v2 import SpeechRecognizerFaster as SpeechRecognizer
 import asyncio
 from os import PathLike

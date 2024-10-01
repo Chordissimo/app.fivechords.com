@@ -1,6 +1,5 @@
 from faster_whisper import WhisperModel
 import numpy as np
-from models import _MODELS
 import logging
 import sys
 from models import _LOGGING_LEVEL

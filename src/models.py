@@ -2,7 +2,7 @@ from typing import List, Optional
 from pydantic import BaseModel
 import logging
 
-_LOGGING_LEVEL = logging.DEBUG
+_LOGGING_LEVEL = logging.INFO
 
 _MODELS = {
      "tiny.en": "Systran/faster-whisper-tiny.en",
@@ -22,6 +22,17 @@ _MODELS = {
      "distil-small.en": "Systran/faster-distil-whisper-small.en",
      "distil-large-v3": "Systran/faster-distil-whisper-large-v3",
 }
+
+_HOME = "/workspace"
+
+_PATHS = {
+    "google_services": _HOME + "/5chords.json",
+    "model_snapshot": _HOME + "/model_snapshot/",
+    "auth": _HOME + "/config/nginx/auth.conf",
+    "workdir": _HOME + "/workdir"
+}
+
+_REFS = ["https://app.fivechords.com", "https://5j02sjqelnp1wu-443.proxy.runpod.net/"]
 
 class Chord(BaseModel):
     chord: str
