@@ -2,22 +2,18 @@ import os
 import shutil
 import traceback
 import uuid
-from fastapi import FastAPI, UploadFile, File, \
-    HTTPException, Request
+import logging
+import sys
+
+from fastapi import FastAPI, UploadFile, File, HTTPException, Request
 from db import database
 from helpers.db import DATABASE_COLLECTIONS
 from middleware import validate_user_middleware
-from models import Response, YoutubeRequest
-from services import SpeechRecognizer, \
-    ChordsRecognizerChordino, \
-    get_samples, resample, get_tempo, \
-    download_from_youtube
+from models import Response, YoutubeRequest, _LOGGING_LEVEL, _PATHS
+from services import SpeechRecognizer, ChordsRecognizerChordino, get_samples, resample, get_tempo, download_from_youtube
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
-import logging
-import sys
-from models import _LOGGING_LEVEL, _PATHS
 
 app = FastAPI(title="FiveChords - recognizer",
               docs_url='/adm/recognize',
@@ -57,17 +53,6 @@ app.add_middleware(
 if not os.path.exists(_PATHS.get("workdir")):
     os.makedirs(_PATHS.get("workdir"))
 
-
-# @app.get("/health_check", response_model=Response)
-# async def health_check() -> Response:
-#     return Response(
-#         chords=[],
-#         text=[],
-#         tempo=0.0,
-#         duration=0.0
-#     )
-
-
 @app.post("/api/recognize/upload/{task_id}", response_model=Response)
 async def recognize(
     request: Request,
@@ -96,18 +81,25 @@ async def recognize(
         chord_chunks[-1].end = max(int(len(samples) / 16), chord_chunks[-1].start)
 
         tempo = get_tempo(samples)
-        text_chunks = SpeechRecognizer.recognize(samples)
+        model_id = "distil-large-v2" if "/api/recognize/youtube/loader/" not in request.url.path else "distil-large-v2"
+        text_chunks = SpeechRecognizer.recognize(
+            samples,
+            model_id=model_id
+        )
+
         if text_chunks and len(text_chunks) > 0:
             if text_chunks[0].start is None:
                 text_chunks[0].start = 0
             if text_chunks[-1].end is None:
                 text_chunks[-1].end = int(len(samples) / 16000)
+
         result = {
             "chords": [x.__dict__.copy() for x in chord_chunks],
             "text": [x.__dict__.copy() for x in text_chunks],
             "tempo": tempo,
             "duration": len(samples) / 16000
         }
+
         database[DATABASE_COLLECTIONS.RECOGNITIONS.name].find_one_and_update(
             filter={
                 "user_id": user_id,
@@ -116,10 +108,10 @@ async def recognize(
             update={
                 "$set": {**result, "completed": True}
             }
+
         )
-        return Response(
-            **result
-        )
+        return Response(**result)
+        
     except SpeechRecognizer.Exception:
         traceback.print_exc()
         result = {
@@ -165,7 +157,7 @@ async def recognize_youtube(
     video_id = parse_qs(parsed_url.query)["v"][0]
     user_id = request.state.user_id
 
-    logger.info("URL: " + str(request.url))
+    logger.info("URL: " + str(request_body.url))
     database[DATABASE_COLLECTIONS.RECOGNITIONS.name]\
         .insert_one(
         {
@@ -180,7 +172,7 @@ async def recognize_youtube(
     try:
         os.mkdir(work_dir)
         filepath, captions_qury = await download_from_youtube(
-            url=request_body.url, root=work_dir
+            url="https://youtube.com/watch?v=" + video_id, root=work_dir
         )
 
         filepath = resample(filepath, root=work_dir)

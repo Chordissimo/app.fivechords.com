@@ -4,13 +4,12 @@ from fastapi.responses import Response as FAPIResponse
 from db import database
 from helpers.db import DATABASE_COLLECTIONS
 from middleware import validate_user_middleware
-from models import Response, StatusResponse, YoutubeRequest
+from models import Response, StatusResponse, YoutubeRequest, SearchResults, SearchRequest, YoutubeVideo, _LOGGING_LEVEL, _PATHS
 from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import logging
 import sys
-from models import _LOGGING_LEVEL, _PATHS
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -114,6 +113,48 @@ async def recognize_youtube(
         )
 
         return response
+        
+    except Exception:
+        traceback.print_exc()
+
+
+@app.post("/api/find/youtube/{skip}", response_model=SearchResults)
+async def search_db(
+    request: Request,
+    skip: int,
+    request_body: SearchRequest
+) -> SearchResults:
+    
+    if request_body.search_str == "":
+        return FAPIResponse(
+            content=None,
+            status_code=204
+        )
+    
+    try:
+        search_results = database[DATABASE_COLLECTIONS.RECOGNITIONS.name].find({
+            "title": {'$regex' : request_body.search_str, '$options' : 'i'},
+            "completed": True
+        }, skip=skip, limit=20)
+        
+        if not search_results:
+            return SearchResults(result=[])
+        
+        result = []
+        for r in search_results:
+            result.append(YoutubeVideo(
+                title=r["title"],
+                video_id=r["video_id"],
+                thumbnail=r["thumbnail"]
+            ))
+        
+        if result:
+            return SearchResults(result=result)
+
+        return FAPIResponse(
+            content=None,
+            status_code=204
+        )
         
     except Exception:
         traceback.print_exc()

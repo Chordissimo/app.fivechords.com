@@ -32,7 +32,10 @@ _PATHS = {
     "workdir": _HOME + "/workdir"
 }
 
-_REFS = ["https://app.fivechords.com", "https://5j02sjqelnp1wu-443.proxy.runpod.net/"]
+_REFS = [
+    "https://app.fivechords.com", 
+    "https://ubr15qf9fnmz3j-443.proxy.runpod.net/",
+]
 
 class Chord(BaseModel):
     chord: str
@@ -53,11 +56,25 @@ class Response(BaseModel):
     duration: float
 
 
-class YoutubeRequest(BaseModel):
-    url: str
-
-
 class StatusResponse(BaseModel):
     found: bool
     completed: bool
     result: Optional[Response]
+    
+
+class YoutubeRequest(BaseModel):
+    url: str
+
+
+class SearchRequest(BaseModel):
+    search_str: str
+
+    
+class YoutubeVideo(BaseModel):
+    title: str
+    video_id: str
+    thumbnail: str
+
+    
+class SearchResults(BaseModel):
+    result: List[YoutubeVideo]

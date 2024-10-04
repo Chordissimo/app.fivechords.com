@@ -50,7 +50,7 @@ async def validate_user_middleware(
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="")
-        
+
     # if token and token.startswith("Basic"):
     #     id_token = token.split(" ").pop()
     #     decoded_credentials = base64.b64decode(id_token).decode("utf-8")

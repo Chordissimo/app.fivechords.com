@@ -45,16 +45,16 @@ async def download_from_youtube(
     future = asyncio.Future()
     yt = YouTube(url=url, on_complete_callback=lambda y, x: on_dowload_complete(f=future, url=x, y=y))
     # assert yt.length <= MAX_SECONDS
-    
+
     yt.streams.filter(only_audio=True).first().download(root, filename=f"{uuid.uuid4().__str__()}.mp4")
-    
+
     await future
     return future.result(), yt.captions
 
 
 def resample(filepath: PathLike, root: str) -> PathLike:
     resampled_filepath = os.path.join(root, f"{uuid.uuid4().__str__()}.wav")
-    ex = f"ffmpeg -i {filepath} -ar 16000 -ac 1 -y {resampled_filepath} > /dev/null 2>&1"
+    ex = f"ffmpeg -hide_banner -loglevel error -i {filepath} -ar 16000 -ac 1 -y {resampled_filepath}"
     os.system(ex)
     return resampled_filepath
 

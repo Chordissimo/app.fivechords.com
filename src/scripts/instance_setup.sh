@@ -17,10 +17,8 @@ mkdir -p /mongodb && \
 wget --directory-prefix=/mongodb https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2204-8.0.0.tgz && \
 tar -xf /mongodb/mongodb-linux-x86_64-ubuntu2204-8.0.0.tgz --strip-components=1 -C /mongodb && \
 chown -R root:root /mongodb && \
-ln -s  /mongodb/bin/* /usr/local/bin/ && \
+ln -nsf  /mongodb/bin/* /usr/local/bin/ && \
 
-cp $BASE_DIR/config/mongo/mongod /etc/init.d && \
-chmod +x /etc/init.d/mongod && \
 mkdir -p $BASE_DIR/mongodb && \
 mkdir -p /var/log/mongodb && \
 
@@ -59,6 +57,8 @@ cp $BASE_DIR/config/chords/* /var/www/chords && \
 
 # ------------ Start services ------------
 service nginx start && \
+systemctl enable supervisor && \
+service supervisor start && \
 supervisorctl update && \
 sleep 5
 mongosh "mongodb://127.0.0.1:27017/aichords" --file config/mongo/mongo-init.js && \
