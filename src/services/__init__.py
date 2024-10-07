@@ -41,15 +41,24 @@ def on_dowload_complete(f: asyncio.Future, url: str, y: Any):
 async def download_from_youtube(
         url: str,
         root: str
-) -> Tuple[PathLike, CaptionQuery]:
+) -> Tuple[PathLike, str, str]:
     future = asyncio.Future()
     yt = YouTube(url=url, on_complete_callback=lambda y, x: on_dowload_complete(f=future, url=x, y=y))
     # assert yt.length <= MAX_SECONDS
 
     yt.streams.filter(only_audio=True).first().download(root, filename=f"{uuid.uuid4().__str__()}.mp4")
+    title = ""
+    thumbnail_url = ""
+    try:
+        title = yt.title
+        thumbnail_url = yt.thumbnail_url
+    except Exception as e:
+        logger.error(e)
+        pass
 
+    logger.info(title)
     await future
-    return future.result(), yt.captions
+    return future.result(), title, thumbnail_url
 
 
 def resample(filepath: PathLike, root: str) -> PathLike:

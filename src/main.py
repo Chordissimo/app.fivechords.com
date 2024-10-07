@@ -81,7 +81,7 @@ async def recognize(
         chord_chunks[-1].end = max(int(len(samples) / 16), chord_chunks[-1].start)
 
         tempo = get_tempo(samples)
-        model_id = "distil-large-v2" if "/api/recognize/youtube/loader/" not in request.url.path else "distil-large-v2"
+        model_id = "distil-large-v3" if "/api/recognize/youtube/loader/" not in request.url.path else "distil-large-v3"
         text_chunks = SpeechRecognizer.recognize(
             samples,
             model_id=model_id
@@ -97,7 +97,9 @@ async def recognize(
             "chords": [x.__dict__.copy() for x in chord_chunks],
             "text": [x.__dict__.copy() for x in text_chunks],
             "tempo": tempo,
-            "duration": len(samples) / 16000
+            "duration": len(samples) / 16000,
+            "title": "",
+            "thumbnail": ""
         }
 
         database[DATABASE_COLLECTIONS.RECOGNITIONS.name].find_one_and_update(
@@ -118,8 +120,11 @@ async def recognize(
             "chords": [x.__dict__.copy() for x in chord_chunks],
             "text": [],
             "tempo": tempo,
-            "duration": len(samples) / 16000
+            "duration": len(samples) / 16000,
+            "title": "",
+            "thumbnail": ""
         }
+        
         database[DATABASE_COLLECTIONS.RECOGNITIONS.name].find_one_and_update(
             filter={
                 "user_id": user_id,
@@ -132,6 +137,7 @@ async def recognize(
         return Response(
             **result
         )
+        
     except Exception as e:
         database[DATABASE_COLLECTIONS.RECOGNITIONS.name].find_one_and_delete(
             filter={
@@ -139,8 +145,10 @@ async def recognize(
                 "task_id": task_id
             }
         )
+        
         traceback.print_exc()
         raise HTTPException(status_code=400, detail=e.__str__())
+    
     finally:
         if work_dir and os.path.exists(work_dir):
             shutil.rmtree(work_dir)
@@ -156,8 +164,9 @@ async def recognize_youtube(
     parsed_url = urlparse(request_body.url)
     video_id = parse_qs(parsed_url.query)["v"][0]
     user_id = request.state.user_id
+    url = "https://youtube.com/watch?v=" + video_id
 
-    logger.info("URL: " + str(request_body.url))
+    logger.info("URL: " + url)
     database[DATABASE_COLLECTIONS.RECOGNITIONS.name]\
         .insert_one(
         {
@@ -171,8 +180,8 @@ async def recognize_youtube(
     chord_chunks, tempo = [], 0
     try:
         os.mkdir(work_dir)
-        filepath, captions_qury = await download_from_youtube(
-            url="https://youtube.com/watch?v=" + video_id, root=work_dir
+        filepath, title, thumbnail = await download_from_youtube(
+            url=url, root=work_dir
         )
 
         filepath = resample(filepath, root=work_dir)
@@ -181,11 +190,11 @@ async def recognize_youtube(
         tempo = get_tempo(samples)
         chord_chunks[-1].end = max(int(len(samples) / 16), chord_chunks[-1].start)
 
-        model_id = "distil-large-v2" if "/api/recognize/youtube/loader/" not in request.url.path else "distil-large-v2"
+        model_id = "distil-large-v3" if "/api/recognize/youtube/loader/" not in request.url.path else "distil-large-v3"
         logger.info("Using model: " + model_id + ", " + request.url.path)
         text_chunks = SpeechRecognizer.recognize(
             samples,
-            captions_qury=captions_qury,
+            None,
             model_id=model_id
         )
 
@@ -198,7 +207,9 @@ async def recognize_youtube(
             "chords": [x.__dict__.copy() for x in chord_chunks],
             "text": [x.__dict__.copy() for x in text_chunks],
             "tempo": tempo,
-            "duration": samples.shape[0] / 16000
+            "duration": samples.shape[0] / 16000,
+            "title": title,
+            "thumbnail": thumbnail
         }
         database[DATABASE_COLLECTIONS.RECOGNITIONS.name].find_one_and_update(
             filter={
@@ -220,7 +231,9 @@ async def recognize_youtube(
             "chords": [x.__dict__.copy() for x in chord_chunks],
             "text": [],
             "tempo": tempo,
-            "duration": samples.shape[0] / 16000
+            "duration": samples.shape[0] / 16000,
+            "title": title,
+            "thumbnail": thumbnail
         }
         database[DATABASE_COLLECTIONS.RECOGNITIONS.name].find_one_and_update(
             filter={

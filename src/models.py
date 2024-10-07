@@ -54,6 +54,8 @@ class Response(BaseModel):
     text: Optional[List[TextStr]]
     tempo: float
     duration: float
+    title: str
+    thumbnail: str
 
 
 class StatusResponse(BaseModel):

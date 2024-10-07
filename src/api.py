@@ -57,6 +57,7 @@ async def get_status(request: Request, task_id: str) -> StatusResponse:
             "user_id": user_id, "task_id": task_id
         })
         if result is None or "completed" not in result:
+            logger.info(str(request.url) + " - " + "not found")
             return StatusResponse(
                 found=False,
                 completed=False,
@@ -64,12 +65,13 @@ async def get_status(request: Request, task_id: str) -> StatusResponse:
             )
 
         if not result["completed"]:
+            logger.info(str(request.url) + " - " + "found, not completed")
             return StatusResponse(
                 found=True,
                 completed=False,
                 result=None
             )
-
+        logger.info(str(request.url) + " - " + "found, completed")
         return StatusResponse(
             found=True,
             completed=True,
@@ -77,7 +79,9 @@ async def get_status(request: Request, task_id: str) -> StatusResponse:
                 chords=result["chords"],
                 text=result["text"],
                 tempo=result["tempo"],
-                duration=result["duration"]
+                duration=result["duration"],
+                title=result["title"],
+                thumbnail=result["thumbnail"]
             )
         )
     except Exception as e:
@@ -100,13 +104,17 @@ async def recognize_youtube(
             "completed": True
         })
         if result:
+            logger.info(str(request.url) + " - " + "found")
             return Response(
                 chords=result["chords"],
                 text=result["text"],
                 tempo=result["tempo"],
-                duration=result["duration"]
+                duration=result["duration"],
+                title=result["title"],
+                thumbnail=result["thumbnail"]
             )
-
+        
+        logger.info(str(request.url) + " - " + "not found")
         response = FAPIResponse(
             content=None,
             status_code=204
@@ -126,6 +134,7 @@ async def search_db(
 ) -> SearchResults:
     
     if request_body.search_str == "":
+        logger.info(str(request.url) + " - " + "empty search_str")
         return FAPIResponse(
             content=None,
             status_code=204
@@ -138,6 +147,7 @@ async def search_db(
         }, skip=skip, limit=20)
         
         if not search_results:
+            logger.info(str(request.url) + " - " + "found")
             return SearchResults(result=[])
         
         result = []
@@ -151,6 +161,7 @@ async def search_db(
         if result:
             return SearchResults(result=result)
 
+        logger.info(str(request.url) + " - " + "not found")
         return FAPIResponse(
             content=None,
             status_code=204
