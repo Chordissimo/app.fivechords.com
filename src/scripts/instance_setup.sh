@@ -45,6 +45,7 @@ apt-get install -y git "g++" libsndfile1 timidity ffmpeg nginx && \
 pip install gunicorn numpy==1.26.4 wheel "pymongo[srv]" && \
 apt install -y libpython3.10-dev && \
 pip install --ignore-requires-python chord-extractor==0.1.2 && \
+pip install -U demucs && \
 pip install --no-cache-dir -r $BASE_DIR/scripts/requirements.txt && \
 
 # ------------ Download model ------------
